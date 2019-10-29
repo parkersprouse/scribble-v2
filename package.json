@@ -1,0 +1,27 @@
+{
+  "name": "scribble-server",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server",
+    "db:create": "node server/bin/setup_db",
+    "dev-build": "cd client && npm run build && cd .. && node server",
+    "dev": "concurrently \"npm start\" \"cd client && npm start\" ",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+  },
+  "dependencies": {
+    "@sentry/node": "^5.7.1",
+    "bcrypt": "^3.0.6",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.9.1",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.1"
+  },
+  "devDependencies": {
+    "concurrently": "^5.0.0"
+  }
+}
