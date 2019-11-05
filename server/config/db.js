@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const config = require('./index');
 
-const Op = Sequelize.Op;
+const { Op } = Sequelize;
 
 const db = new Sequelize(config.db, {
   dialectOptions: {
