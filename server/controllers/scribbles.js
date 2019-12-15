@@ -152,10 +152,10 @@ module.exports = {
       return respond(res, http_bad_request, validation_errs.array()[0].msg);
     }
 
-    const { term, tag, owner_id } = req.body;
-    let { page, per } = req.body;
+    const { term, tag, owner_id } = req.query;
+    let { page, per } = req.query;
     if (!page) page = 1;
-    if (!per) per = 12;
+    if (!per) per = 10;
 
     const body_search = { body: { [Op.iLike]: `%${term}%` } };
     const title_search = { title: { [Op.iLike]: `%${term}%` } };
