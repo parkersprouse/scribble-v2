@@ -1,19 +1,16 @@
 const { validationResult } = require('express-validator');
 const { DateTime } = require('luxon');
-const Scribble = require('../models/scribble');
 const { Sequelize } = require('../config/db');
-
-const { Op } = Sequelize;
 const {
   http_ok,
   http_no_content,
   http_bad_request,
   http_server_error,
 } = require('../config/constants');
-const {
-  call,
-  respond,
-} = require('../lib');
+const { call, respond } = require('../lib');
+const Scribble = require('../models/scribble');
+
+const { Op } = Sequelize;
 
 module.exports = {
 
@@ -32,7 +29,9 @@ module.exports = {
       return respond(res, http_bad_request, validation_errs.array()[0].msg);
     }
 
-    const [err, data] = await call(Scribble.findOne({ where: { id: req.params.id } }));
+    const [err, data] = await call(Scribble.findOne(
+      { where: { id: req.params.id } },
+    ));
     if (err) return respond(res, http_server_error, 'Failed to get scribbles');
     if (!data) return respond(res, http_no_content, 'No scribble found');
 
@@ -45,9 +44,15 @@ module.exports = {
       return respond(res, http_bad_request, validation_errs.array()[0].msg);
     }
 
-    const [err, data] = await call(Scribble.findAll({ where: { owner_id: req.params.owner_id } }));
-    if (err) return respond(res, http_server_error, 'Failed to get scribbles');
-    if (!data || data.length === 0) return respond(res, http_no_content, 'No scribbles found');
+    const [err, data] = await call(Scribble.findAll(
+      { where: { owner_id: req.params.owner_id } },
+    ));
+    if (err) {
+      return respond(res, http_server_error, 'Failed to get scribbles');
+    }
+    if (!data || data.length === 0) {
+      return respond(res, http_no_content, 'No scribbles found');
+    }
 
     const scribbles = data.map((scribble) => scribble.get({ plain: true }));
     respond(res, http_ok, null, scribbles);
@@ -60,22 +65,19 @@ module.exports = {
     }
 
     const [err, data] = await call(Scribble.findAll({
-      where: { owner_id: req.params.owner_id }, attributes: ['tags'],
+      where: { owner_id: req.params.owner_id },
+      attributes: ['tags'],
     }));
     if (err) return respond(res, http_server_error, 'Failed to get tags');
 
     let all_tags = [];
     data.forEach(({ tags }) => {
-      if (tags) {
-        all_tags = all_tags.concat(tags);
-      }
+      if (tags) all_tags = all_tags.concat(tags);
     });
 
     const uniq_tags = [];
     all_tags.forEach((tag) => {
-      if (uniq_tags.indexOf(tag) === -1) {
-        uniq_tags.push(tag);
-      }
+      if (!uniq_tags.includes(tag)) uniq_tags.push(tag);
     });
 
     uniq_tags.sort();
@@ -83,39 +85,73 @@ module.exports = {
   },
 
   async add(req, res) {
-    if (!req.body.body) return respond(res, http_bad_request, 'Your scribble cannot be empty');
-    if (!req.body.title) req.body.title = DateTime.local().toFormat('MM/DD/YYYY h:mma');
+    const validation_errs = validationResult(req);
+    if (!validation_errs.isEmpty()) {
+      return respond(res, http_bad_request, validation_errs.array()[0].msg);
+    }
+
+    if (!req.body.title) {
+      req.body.title = DateTime.local().toFormat('MM/DD/YYYY h:mma');
+    }
 
     const [err, data] = await call(Scribble.create(req.body));
-    if (err) return respond(res, http_server_error, 'Failed to create scribble');
+    if (err) {
+      return respond(res, http_server_error, 'Failed to create scribble');
+    }
 
     respond(res, http_ok, null, data);
   },
 
   async update(req, res) {
+    const validation_errs = validationResult(req);
+    if (!validation_errs.isEmpty()) {
+      return respond(res, http_bad_request, validation_errs.array()[0].msg);
+    }
+
+    const [err, data] = await call(Scribble.update(
+      req.body, { where: { id: req.body.id }, returning: true },
+    ));
+    if (err) {
+      return respond(res, http_server_error, 'Failed to update scribble');
+    }
+    if (!data[0]) {
+      return respond(res, http_bad_request,
+        'No scribble updated, check provided ID');
+    }
+
     // data[0] is the number of rows affected
     // data[1] is the array containing the returned rows
     // data[1][0] is the first game that was returned
     // data[1][0].dataValues is the object containing the values of the returned row
-    if (!req.body.body) return respond(res, http_bad_request, 'Your scribble cannot be empty');
-
-    const [err, data] = await call(
-      Scribble.update(req.body, { where: { id: req.body.id }, returning: true }));
-    if (err) return respond(res, http_server_error, 'Failed to update scribble');
-    if (!data[0]) return respond(res, http_bad_request, 'No scribble updated, check provided ID');
-
     respond(res, http_ok, null, data[1][0].dataValues);
   },
 
   async delete(req, res) {
-    const [err, data] = await call(Scribble.destroy({ where: { id: req.params.id } }));
-    if (err) return respond(res, http_server_error, 'Failed to delete scribble');
-    if (data < 1) return respond(res, http_bad_request, 'No scribble deleted, check provided ID');
+    const validation_errs = validationResult(req);
+    if (!validation_errs.isEmpty()) {
+      return respond(res, http_bad_request, validation_errs.array()[0].msg);
+    }
+
+    const [err, data] = await call(Scribble.destroy(
+      { where: { id: req.params.id } },
+    ));
+    if (err) {
+      return respond(res, http_server_error, 'Failed to delete scribble');
+    }
+    if (data < 1) {
+      return respond(res, http_bad_request,
+        'No scribble deleted, check provided ID');
+    }
 
     respond(res, http_ok);
   },
 
   async filter(req, res) {
+    const validation_errs = validationResult(req);
+    if (!validation_errs.isEmpty()) {
+      return respond(res, http_bad_request, validation_errs.array()[0].msg);
+    }
+
     const { term, tag, owner_id } = req.body;
     let { page, per } = req.body;
     if (!page) page = 1;
@@ -135,7 +171,9 @@ module.exports = {
     const [pagi_err, pagi_data] = await call(Scribble.findAll({
       where: query, limit: per, offset: (page - 1) * per, order: ['created_at'],
     }));
-    if (all_err || pagi_err) return respond(res, http_server_error, 'Failed to get scribbles');
+    if (all_err || pagi_err) {
+      return respond(res, http_server_error, 'Failed to get scribbles');
+    }
     if (!pagi_data || pagi_data.length === 0) {
       return respond(res, http_no_content, 'No scribbles found');
     }

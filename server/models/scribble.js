@@ -5,7 +5,7 @@ const attributes = {
   id: {
     type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, unique: true, primaryKey: true,
   },
-  body: { type: Sequelize.TEXT, allowNull: false },
+  content: { type: Sequelize.TEXT, allowNull: false },
   title: { type: Sequelize.TEXT },
   tags: { type: Sequelize.ARRAY(Sequelize.TEXT) },
   owner_id: {

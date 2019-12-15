@@ -31,12 +31,14 @@ router.get('/logout', verifyToken, auth.logout);
 // router.patch('/users', verifyToken, users.update);
 // router.patch('/users/update_password', verifyToken, users.updatePassword);
 // router.patch('/users/reset_password', users.resetPassword);
-//
+
 //------------------------------------------------------------------------
 // Scribbles
 const scribbles = require('./scribbles');
 
-router.delete('/scribbles/:id', verifyToken, scribbles.delete);
+router.delete('/scribbles/:id', [
+  check('id').not().isEmpty().withMessage('Please provide an ID'),
+], verifyToken, scribbles.delete);
 router.get('/scribbles', verifyToken, scribbles.getAll);
 router.get('/scribbles/id/:id', [
   check('id').not().isEmpty().withMessage('Please provide an ID'),
@@ -47,8 +49,13 @@ router.get('/scribbles/owner/:owner_id', [
 router.get('/scribbles/tags/:owner_id', [
   check('owner_id').not().isEmpty().withMessage('Please provide an owner ID'),
 ], verifyToken, scribbles.getOwnerTags);
-router.patch('/scribbles', verifyToken, scribbles.update);
-router.post('/scribbles', verifyToken, scribbles.add);
+router.patch('/scribbles', [
+  check('id').not().isEmpty().withMessage('Please provide an ID'),
+  check('content').not().isEmpty().withMessage('Your scribble cannot be empty'),
+], verifyToken, scribbles.update);
+router.post('/scribbles', [
+  check('content').not().isEmpty().withMessage('Your scribble cannot be empty'),
+], verifyToken, scribbles.add);
 router.post('/scribbles/filter', verifyToken, scribbles.filter);
 
 module.exports = router;
