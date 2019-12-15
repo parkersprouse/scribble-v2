@@ -23,17 +23,32 @@ router.post('/register', [
 
 router.get('/logout', verifyToken, auth.logout);
 
-// //------------------------------------------------------------------------
-// // Users
-// const users = require('./users');
-//
-// router.get('/users', verifyToken, users.getAll);
-// router.get('/users/me', verifyToken, users.getMe);
-// router.get('/users/:id', verifyToken, users.getByID);
-// router.post('/users/send_recovery_email', users.sendRecoveryEmail);
-// router.patch('/users', verifyToken, users.update);
-// router.patch('/users/update_password', verifyToken, users.updatePassword);
-// router.patch('/users/reset_password', users.resetPassword);
+//------------------------------------------------------------------------
+// Users
+const users = require('./users');
+
+router.delete('/users/:id', [
+  check('id').not().isEmpty().withMessage('Please provide an ID'),
+], verifyToken, users.delete);
+
+router.get('/users', verifyToken, users.getAll);
+
+router.get('/users/me', verifyToken, users.getMe);
+
+router.get('/users/:id', [
+  check('id').not().isEmpty().withMessage('Please provide an ID'),
+], verifyToken, users.getID);
+
+router.patch('/users', [
+  check('password_current').not().isEmpty().withMessage('Please provide your current password'),
+  check('email').isEmail().withMessage('Please make sure your e-mail is valid'),
+], verifyToken, users.update);
+
+router.patch('/users/password', [
+  check('password_current').not().isEmpty().withMessage('Please provide your current password'),
+  check('password_new').isLength({ min: 8 }).withMessage('Your password must be at least 8 characters'),
+  check('password_new').custom((value, { req }) => value === req.body.password_new_confirm).withMessage('Please make sure the passwords match'),
+], verifyToken, users.updatePassword);
 
 //------------------------------------------------------------------------
 // Scribbles

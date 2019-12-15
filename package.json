@@ -9,7 +9,7 @@
     "start": "node server",
     "lint": "eslint --ext .js server/",
     "lint:fix": "eslint --ext .js server/ --fix",
-    "db:setup": "node server/bin/setup_db",
+    "db:create": "node server/bin/setup_db",
     "dev-build": "cd client && npm run build && cd .. && node server",
     "dev": "concurrently \"npm start\" \"cd client && npm start\" ",
     "heroku-postbuild": "cd client && npm install && npm run build"

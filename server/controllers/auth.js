@@ -1,7 +1,5 @@
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
-const jwt = require('jsonwebtoken');
-const config = require('../config');
 const { Op } = require('../config/db');
 const User = require('../models/user');
 const {
@@ -11,7 +9,7 @@ const {
   http_bad_request,
   http_server_error,
 } = require('../config/constants');
-const { call, generateJwtPayload, respond } = require('../lib');
+const { buildToken, call, respond } = require('../lib');
 
 module.exports = {
 
@@ -25,20 +23,29 @@ module.exports = {
     const [err, data] = await call(User.findOne({ where: { email: { [Op.iLike]: email } } }));
     if (err) {
       return respond(res, http_server_error,
-        'There was an unknown problem when trying to log you in', err.message);
+        'There was an unknown problem trying to log you in', err.message);
     }
     if (!data) {
       return respond(res, http_bad_request, 'Your e-mail or password was incorrect');
     }
 
     const match = bcrypt.compareSync(password, data.pw_hash);
-    if (match) {
-      const payload = generateJwtPayload(data);
-      const token = jwt.sign(payload, config.jwt_secret);
-      return respond(res, http_ok, null, token);
+    if (!match) {
+      return respond(res, http_bad_request, 'Your e-mail or password was incorrect');
     }
 
-    respond(res, http_bad_request, 'Your e-mail or password was incorrect');
+    res.cookie(cookie_token, buildToken(data.id), {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true,
+      signed: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
+    respond(res, http_ok);
+  },
+
+  logout(req, res) {
+    res.clearCookie(cookie_token);
+    respond(res, http_ok);
   },
 
   async register(req, res) {
@@ -54,17 +61,16 @@ module.exports = {
     if (err) {
       const msg = err.name === db_err_duplicate
         ? 'An account with that e-mail address already exist'
-        : 'There was an unknown problem when creating your account';
+        : 'There was an unknown problem creating your account';
       return respond(res, http_bad_request, msg);
     }
 
-    const payload = generateJwtPayload(data);
-    const token = jwt.sign(payload, config.jwt_secret);
-    respond(res, http_ok, null, token);
-  },
-
-  logout(req, res) {
-    res.clearCookie(cookie_token);
+    res.cookie(cookie_token, buildToken(data.id), {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true,
+      signed: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
     respond(res, http_ok);
   },
 

@@ -29,9 +29,7 @@ module.exports = {
       return respond(res, http_bad_request, validation_errs.array()[0].msg);
     }
 
-    const [err, data] = await call(Scribble.findOne(
-      { where: { id: req.params.id } },
-    ));
+    const [err, data] = await call(Scribble.findOne({ where: { id: req.params.id } }));
     if (err) return respond(res, http_server_error, 'Failed to get scribbles');
     if (!data) return respond(res, http_no_content, 'No scribble found');
 
