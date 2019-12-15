@@ -9,4 +9,4 @@ const User = require('../models/user');
 
   // Clean up after syncing
   process.exit();
-})();
+}());
