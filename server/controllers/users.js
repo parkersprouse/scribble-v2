@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const { validationResult } = require('express-validator');
 const {
   http_ok,
   http_no_content,
@@ -12,11 +11,6 @@ const Users = require('../models/user');
 module.exports = {
 
   async delete(req, res) {
-    const validation_errs = validationResult(req);
-    if (!validation_errs.isEmpty()) {
-      return respond(res, http_bad_request, validation_errs.array()[0].msg);
-    }
-
     const [err, data] = await call(Users.destroy({ where: { id: req.body.id } }));
     if (err) return respond(res, http_server_error, 'Failed to delete user');
     if (data < 1) return respond(res, http_bad_request, 'No user deleted, check provided ID');
@@ -33,11 +27,6 @@ module.exports = {
   },
 
   async getID(req, res) {
-    const validation_errs = validationResult(req);
-    if (!validation_errs.isEmpty()) {
-      return respond(res, http_bad_request, validation_errs.array()[0].msg);
-    }
-
     const [err, data] = await call(Users.findOne({ where: { id: req.params.id } }));
     if (err) return respond(res, http_server_error, 'Failed to get user');
     if (!data) return respond(res, http_no_content, 'No user found');
@@ -46,17 +35,12 @@ module.exports = {
   },
 
   getMe(req, res, next) {
-    req.params.id = req.user_obj.id;
+    req.params.id = req.current_user.id;
     module.exports.getID(req, res, next);
   },
 
   async update(req, res) {
-    const validation_errs = validationResult(req);
-    if (!validation_errs.isEmpty()) {
-      return respond(res, http_bad_request, validation_errs.array()[0].msg);
-    }
-
-    const { id } = req.user_obj;
+    const { id } = req.current_user;
     const { password_current } = req.body;
 
     // Check current password
@@ -77,12 +61,7 @@ module.exports = {
   },
 
   async updatePassword(req, res) {
-    const validation_errs = validationResult(req);
-    if (!validation_errs.isEmpty()) {
-      return respond(res, http_bad_request, validation_errs.array()[0].msg);
-    }
-
-    const { id } = req.user_obj;
+    const { id } = req.current_user;
     const { password_current, password_new } = req.body;
 
     // Check current password

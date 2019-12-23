@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const { validationResult } = require('express-validator');
 const { Op } = require('../config/db');
 const User = require('../models/user');
 const {
@@ -14,11 +13,6 @@ const { buildToken, call, respond } = require('../lib');
 module.exports = {
 
   async login(req, res) {
-    const validation_errs = validationResult(req);
-    if (!validation_errs.isEmpty()) {
-      return respond(res, http_bad_request, validation_errs.array()[0].msg);
-    }
-
     const { email, password } = req.body;
     const [err, data] = await call(User.findOne({ where: { email: { [Op.iLike]: email } } }));
     if (err) {
@@ -49,11 +43,6 @@ module.exports = {
   },
 
   async register(req, res) {
-    const validation_errs = validationResult(req);
-    if (!validation_errs.isEmpty()) {
-      return respond(res, http_bad_request, validation_errs.array()[0].msg);
-    }
-
     const { email, name, password } = req.body;
     const salt = bcrypt.genSaltSync();
     const pw_hash = bcrypt.hashSync(password, salt);
