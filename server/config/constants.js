@@ -1,5 +1,5 @@
 module.exports = {
-  cookie_token_name: 'token',
+  cookie_token: 'token',
   db_err_duplicate: 'SequelizeUniqueConstraintError',
   http_ok: 200,
   http_no_content: 204,

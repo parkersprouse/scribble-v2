@@ -1,9 +1,15 @@
 {
   "name": "scribble-server",
   "version": "1.0.0",
+  "engines": {
+    "node": "10.17.0",
+    "npm": "6.11.3"
+  },
   "scripts": {
     "start": "node server",
-    "db:setup": "node server/bin/setup_db",
+    "lint": "eslint --ext .js server/",
+    "lint:fix": "eslint --ext .js server/ --fix",
+    "db:create": "node server/bin/setup_db",
     "dev-build": "cd client && npm run build && cd .. && node server",
     "dev": "concurrently \"npm start\" \"cd client && npm start\" ",
     "heroku-postbuild": "cd client && npm install && npm run build"
@@ -14,14 +20,19 @@
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-validator": "^6.3.0",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
+    "luxon": "^1.21.3",
     "morgan": "^1.9.1",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.1"
   },
   "devDependencies": {
-    "concurrently": "^5.0.0"
+    "concurrently": "^5.0.0",
+    "eslint": "^6.7.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1"
   }
 }

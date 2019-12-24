@@ -14,6 +14,7 @@ app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.errorHandler());
 
 // Setup logger
+// eslint-disable-next-line
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'));
 
 // Use helmet to protect from a number of vulnerabilities
@@ -32,7 +33,7 @@ app.use('/api', controllers);
 app.use(express.static(path.resolve(__dirname, '..', 'client', 'dist')));
 
 // Always return the main index.html, so vue-router renders the active route in the client
-app.get('*', (req, res) => {
+app.get('*', (_req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'client', 'dist', 'index.html'));
 });
 
