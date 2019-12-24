@@ -89,7 +89,7 @@ module.exports = {
   },
 
   async filter(req, res) {
-    const { term, tag, owner_id } = req.query;
+    const { term, tag } = req.query;
     let { page, per } = req.query;
     if (!page) page = 1;
     if (!per) per = 10;
@@ -100,7 +100,7 @@ module.exports = {
 
     const tag_filter = { tags: { $contains: [tag] } };
 
-    let query = { owner_id };
+    let query = { owner_id: req.current_user.id };
     if (term) query = { ...query, ...search };
     if (tag) query = { ...query, ...tag_filter };
 

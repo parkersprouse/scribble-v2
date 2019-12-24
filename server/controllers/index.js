@@ -27,17 +27,13 @@ router.get('/logout', verifyToken, auth.logout);
 // Users
 const users = require('./users');
 
-router.delete('/users/:id', [
-  check('id').not().isEmpty().withMessage('Please provide an ID'),
-], verifyToken, validateParams, users.delete);
+router.delete('/users/:id', verifyToken, users.delete);
 
 router.get('/users', verifyToken, users.getAll);
 
 router.get('/users/me', verifyToken, users.getMe);
 
-router.get('/users/:id', [
-  check('id').not().isEmpty().withMessage('Please provide an ID'),
-], verifyToken, validateParams, users.getID);
+router.get('/users/:id', verifyToken, users.getID);
 
 router.patch('/users', [
   check('password_current').not().isEmpty().withMessage('Please provide your current password'),
@@ -54,19 +50,13 @@ router.patch('/users/password', [
 // Scribbles
 const scribbles = require('./scribbles');
 
-router.delete('/scribbles/:id', [
-  check('id').not().isEmpty().withMessage('Please provide an ID'),
-], verifyToken, validateParams, scribbles.delete);
+router.delete('/scribbles/:id', verifyToken, scribbles.delete);
 
 router.get('/scribbles', verifyToken, scribbles.getAll);
 
-router.get('/scribbles/filter', [
-  check('owner_id').not().isEmpty().withMessage('Please provide an owner ID'),
-], verifyToken, validateParams, scribbles.filter);
+router.get('/scribbles/filter', verifyToken, scribbles.filter);
 
-router.get('/scribbles/id/:id', [
-  check('id').not().isEmpty().withMessage('Please provide an ID'),
-], verifyToken, validateParams, scribbles.getID);
+router.get('/scribbles/id/:id', verifyToken, scribbles.getID);
 
 router.get('/scribbles/owner/:owner_id', verifyToken, scribbles.getOwnerID);
 router.get('/scribbles/owner', verifyToken, scribbles.getOwnerID);
