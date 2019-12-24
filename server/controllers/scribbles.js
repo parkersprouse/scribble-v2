@@ -1,4 +1,3 @@
-const { DateTime } = require('luxon');
 const { Sequelize } = require('../config/db');
 const {
   http_ok,
@@ -16,7 +15,7 @@ module.exports = {
   async getAll(req, res) {
     const [err, data] = await call(Scribble.findAll());
     if (err) return respond(res, http_server_error, 'Failed to get all scribbles', err.message);
-    if (!data || data.length === 0) return respond(res, http_bad_request, 'No scribbles found');
+    if (!data || data.length === 0) return respond(res, http_no_content, 'No scribbles found');
 
     const scribbles = data.map((scribble) => scribble.get({ plain: true }));
     respond(res, http_ok, null, scribbles);
@@ -24,7 +23,7 @@ module.exports = {
 
   async getID(req, res) {
     const [err, data] = await call(Scribble.findOne({ where: { id: req.params.id } }));
-    if (err) return respond(res, http_server_error, 'Failed to get scribbles');
+    if (err) return respond(res, http_server_error, 'Failed to get scribble');
     if (!data) return respond(res, http_no_content, 'No scribble found');
 
     respond(res, http_ok, null, data);
@@ -55,13 +54,7 @@ module.exports = {
       if (tags) all_tags = all_tags.concat(tags);
     });
 
-    const uniq_tags = [];
-    all_tags.forEach((tag) => {
-      if (!uniq_tags.includes(tag)) uniq_tags.push(tag);
-    });
-
-    uniq_tags.sort();
-    respond(res, http_ok, null, uniq_tags);
+    respond(res, http_ok, null, [...new Set(all_tags)].sort());
   },
 
   async add(req, res) {

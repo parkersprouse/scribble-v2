@@ -45,7 +45,7 @@ module.exports = {
         const verified = jwt.verify(token, config.jwt_secret);
         const [err, data] = await module.exports.call(User.findOne({ where: { id: verified.id } }));
         if (err || !data) return unauthorized();
-        req.current_user = data.dataValues; // pass the logged in user's data to the endpoint resolver
+        req.current_user = data.dataValues;
         return next();
       } catch (e) {
         return unauthorized();
