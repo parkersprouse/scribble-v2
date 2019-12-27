@@ -9,7 +9,7 @@ const User = require('../models/user');
 module.exports = {
 
   buildToken(id) {
-    return jwt.sign({ id }, config.jwt_secret);
+    return jwt.sign({ id }, config.jwt_secret, { expiresIn: '7d' });
   },
 
   call(promise) {
