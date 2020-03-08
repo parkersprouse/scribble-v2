@@ -1,4 +1,4 @@
-# scribble-client
+# Scribble Client
 
 ## Project setup
 ```
