@@ -7,8 +7,12 @@ import './registerServiceWorker';
 import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
+import Navbar from './components/navbar/Navbar.vue';
+import './assets/styles.scss';
 
 Vue.config.productionTip = false;
+
+Vue.component('navbar', Navbar);
 
 new Vue({
   router,
