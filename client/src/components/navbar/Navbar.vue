@@ -1,6 +1,6 @@
 <template>
   <div v-if='!user'>
-    <v-toolbar id='desktop-nav' app dense></v-toolbar>
+    <v-app-bar id='desktop-nav' dense></v-app-bar>
   </div>
   <div v-else>
     <desktop-navbar class='hidden-sm-and-down' :user='user' />

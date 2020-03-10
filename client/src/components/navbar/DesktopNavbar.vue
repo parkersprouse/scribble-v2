@@ -1,13 +1,18 @@
 <template>
-  <v-toolbar id='desktop-nav' app dense>
+  <v-app-bar id='desktop-nav' dense>
     <v-toolbar-title>
       <router-link class='toolbar-title' :to='{ name: "index" }'>
         Scribble
       </router-link>
     </v-toolbar-title>
-
     <v-spacer></v-spacer>
-  </v-toolbar>
+    <router-link v-if='user.username' :to='{ name: "settings" }'>
+      Settings
+    </router-link>
+    <router-link v-if='user.username' :to='{ name: "logout" }'>
+      Logout
+    </router-link>
+  </v-app-bar>
 </template>
 
 <script>
@@ -21,10 +26,3 @@ export default {
   },
 };
 </script>
-
-<style lang='scss'>
-.toolbar-title {
-  color: inherit;
-  text-decoration: inherit;
-}
-</style>
