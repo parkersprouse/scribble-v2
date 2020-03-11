@@ -1,12 +1,3 @@
 <template>
-  <v-app>
-    <navbar />
-    <router-view />
-  </v-app>
+  <router-view />
 </template>
-
-<script>
-export default {
-  name: 'app',
-};
-</script>
