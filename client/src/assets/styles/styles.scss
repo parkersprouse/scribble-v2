@@ -1,6 +1,8 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-vue/src/index.scss';
 
+@import './button.scss';
+
 .jumbotron {
   border-radius: 0px;
 }

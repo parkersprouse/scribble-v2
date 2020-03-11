@@ -1,5 +1,6 @@
-import Vue from 'vue';
+import axios from 'axios';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
+import Vue from 'vue';
 
 import App from './App.vue';
 import './registerServiceWorker';
@@ -8,6 +9,7 @@ import store from './store';
 import './assets/styles/styles.scss';
 
 Vue.config.productionTip = false;
+Vue.prototype.$http = axios;
 
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
