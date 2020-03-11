@@ -10,7 +10,7 @@
           <b-card v-if='show_register' no-body>
             <b-card-body>
               <b-card-title>Register</b-card-title>
-              register
+              <register-form />
             </b-card-body>
             <b-card-footer class='text-center'>
               <b-link @click='show_register = false'>Login</b-link>
@@ -35,11 +35,13 @@
 
 <script>
 import LoginForm from '@/components/index/LoginForm.vue';
+import RegisterForm from '@/components/index/RegisterForm.vue';
 
 export default {
   name: 'index',
   components: {
     LoginForm,
+    RegisterForm,
   },
   data() {
     return {
