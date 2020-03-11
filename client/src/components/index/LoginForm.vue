@@ -1,19 +1,33 @@
 <template>
   <b-form @submit.prevent='login'>
     <b-form-group label='Email' label-for='email'>
-      <b-form-input v-model='form.email' id='email' placeholder='Email' required type='email'>
-      </b-form-input>
+      <b-input-group>
+        <template v-slot:prepend>
+          <b-input-group-text>
+            <b-icon icon='envelope' />
+          </b-input-group-text>
+        </template>
+        <b-form-input v-model='form.email' id='email' placeholder='Email' required type='email'>
+        </b-form-input>
+      </b-input-group>
     </b-form-group>
 
     <b-form-group label='Password' label-for='password'>
-      <b-form-input v-model='form.password' id='password' placeholder='Password' required
-                    type='password'>
-      </b-form-input>
+      <b-input-group>
+        <template v-slot:prepend>
+          <b-input-group-text>
+            <b-icon icon='lock' />
+          </b-input-group-text>
+        </template>
+        <b-form-input v-model='form.password' id='password' placeholder='Password' required
+                      type='password'>
+        </b-form-input>
+      </b-input-group>
     </b-form-group>
 
-    <b-button block :class='{ loading: submitting }' :disabled='submitting' type='submit'
-              variant='primary'>
-      Login
+    <b-button block :disabled='submitting' type='submit' variant='primary'>
+      <b-spinner v-if='submitting' label='Loading' small></b-spinner>
+      <span v-else>Login</span>
     </b-button>
   </b-form>
 </template>

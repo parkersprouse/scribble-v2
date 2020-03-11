@@ -5,7 +5,7 @@
     </b-jumbotron>
     <b-container>
       <b-row align-h='center'>
-        <b-col cols='6'>
+        <b-col md='6'>
 
           <b-card v-if='show_register' no-body>
             <b-card-body>
