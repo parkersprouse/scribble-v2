@@ -1,12 +1,20 @@
 <template>
   <div>
-    <b-jumbotron bg-variant='primary' class='front-jumbotron text-center' header='Scribble'
+    <b-jumbotron bg-variant='dark' class='front-jumbotron text-center' header='Scribble'
                  lead='Need a notepad?' text-variant='white'>
     </b-jumbotron>
     <b-container>
       <b-row align-h='center'>
         <b-col md='6'>
-
+          <b-card no-body>
+            <b-card-body>
+              <b-card-title>What is Scribble?</b-card-title>
+              Scribble is an online notepad and to-do list. Take quick notes to remember for later,
+              whip up a quick to-do list to check later - whatever you may need.
+            </b-card-body>
+          </b-card>
+        </b-col>
+        <b-col md='6'>
           <b-card v-if='show_register' no-body>
             <b-card-body>
               <b-card-title>Register</b-card-title>
@@ -16,7 +24,6 @@
               <b-link @click='show_register = false'>Login</b-link>
             </b-card-footer>
           </b-card>
-
           <b-card v-else no-body>
             <b-card-body>
               <b-card-title>Login</b-card-title>
@@ -26,7 +33,6 @@
               <b-link @click='show_register = true'>Register</b-link>
             </b-card-footer>
           </b-card>
-
         </b-col>
       </b-row>
     </b-container>

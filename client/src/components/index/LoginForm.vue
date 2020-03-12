@@ -33,7 +33,7 @@
 
     <b-button block :disabled='submitting' type='submit' variant='primary'>
       <b-spinner v-if='submitting' label='Loading' small></b-spinner>
-      <span v-else>Login</span>
+      <span v-else><b-icon icon='box-arrow-right'></b-icon> Login</span>
     </b-button>
   </b-form>
 </template>
@@ -57,13 +57,11 @@ export default {
       this.submitting = true;
 
       this.$http.post('/api/login', this.form)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          this.$router.push(this.$route.query.n || { name: 'dashboard' });
         })
         .catch((err) => {
           this.submitting = false;
-          console.log(err);
-          console.log(err.response);
           this.error = err.response.data.message;
         });
     },

@@ -43,7 +43,12 @@
 
     <b-button block :disabled='submitting' type='submit' variant='primary'>
       <b-spinner v-if='submitting' label='Loading' small></b-spinner>
-      <span v-else>Register</span>
+      <span v-else>
+        <b-iconstack style='margin-right: 0.45rem;'>
+          <b-icon icon='plus' scale='1.25' shift-h='8' shift-v='3' stacked></b-icon>
+          <b-icon icon='person-fill' stacked></b-icon>
+        </b-iconstack> Register
+      </span>
     </b-button>
   </b-form>
 </template>
@@ -68,8 +73,8 @@ export default {
       this.submitting = true;
 
       this.$http.post('/api/register', this.form)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          this.$router.push({ name: 'dashboard' });
         })
         .catch((err) => {
           this.submitting = false;
