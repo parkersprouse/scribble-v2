@@ -12,11 +12,11 @@
   </div>
 
   <div v-else>
-    <b-row align-h='center'>
-      <b-col v-for='scribble in scribbles' :key='scribble.id' lg='3' md='4'>
+    <b-row>
+      <b-col v-for='scribble in scribbles' class='scribble-card' :key='scribble.id' lg='3' md='4'>
         <b-card no-body>
           <b-card-body>
-            <b-card-title>{{ scribble.title || 'No Titles' }}</b-card-title>
+            <b-card-title v-html='scribble.title || "<em>No Title</em>"'></b-card-title>
             {{ scribble.content }}
           </b-card-body>
         </b-card>
@@ -39,9 +39,15 @@ export default {
       .then((res) => {
         this.scribbles = res.data.content;
       })
-      .catch((err) => {
-        console.log(err.response.data);
+      .catch(() => {
+        this.error = true;
       });
   },
 };
 </script>
+
+<style lang='scss'>
+.scribble-card {
+  margin-bottom: 30px;
+}
+</style>
