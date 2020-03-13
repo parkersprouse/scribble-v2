@@ -24,7 +24,9 @@
                   <em v-else>No Title</em>
                 </b-tooltip>
               </b-card-title>
-              {{ scribble.content }}
+              <b-card-text>
+                {{ scribble.content }}
+              </b-card-text>
             </b-card-body>
           </b-card>
         </router-link>
@@ -65,12 +67,19 @@ export default {
       text-decoration: none;
 
       > .card {
-        box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12) !important;
+        box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14),
+                    0px 5px 22px 4px rgba(0, 0, 0, 0.12);
       }
     }
   }
 
   .card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .card-text {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
