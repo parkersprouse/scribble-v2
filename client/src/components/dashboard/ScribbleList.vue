@@ -14,12 +14,20 @@
   <div v-else>
     <b-row>
       <b-col v-for='scribble in scribbles' class='scribble-card' :key='scribble.id' lg='3' md='4'>
-        <b-card no-body>
-          <b-card-body>
-            <b-card-title v-html='scribble.title || "<em>No Title</em>"'></b-card-title>
-            {{ scribble.content }}
-          </b-card-body>
-        </b-card>
+        <router-link :to='{ name: "view_scribble", params: { id: scribble.id } }'>
+          <b-card no-body>
+            <b-card-body>
+              <b-card-title :id='`title${scribble.id}`'>
+                <span v-html='scribble.title || "<em>No Title</em>"'></span>
+                <b-tooltip :target='`title${scribble.id}`' triggers='hover'>
+                  <span v-if='scribble.title' v-text='scribble.title'></span>
+                  <em v-else>No Title</em>
+                </b-tooltip>
+              </b-card-title>
+              {{ scribble.content }}
+            </b-card-body>
+          </b-card>
+        </router-link>
       </b-col>
     </b-row>
   </div>
@@ -49,5 +57,23 @@ export default {
 <style lang='scss'>
 .scribble-card {
   margin-bottom: 30px;
+
+  > a {
+    color: inherit;
+
+    &:hover {
+      text-decoration: none;
+
+      > .card {
+        box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12) !important;
+      }
+    }
+  }
+
+  .card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 </style>
