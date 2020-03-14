@@ -12,32 +12,23 @@
   </div>
 
   <div v-else>
+    <h1 class='border-bottom font-weight-bold mb-5 pb-2'>Your Scribbles</h1>
     <b-row>
       <b-col v-for='scribble in scribbles' class='scribble-card' :key='scribble.id' lg='3' md='4'>
-        <router-link :to='{ name: "view_scribble", params: { id: scribble.id } }'>
-          <b-card no-body>
-            <b-card-body>
-              <b-card-title :id='`title${scribble.id}`'>
-                <span v-html='scribble.title || "<em>No Title</em>"'></span>
-                <b-tooltip :target='`title${scribble.id}`' triggers='hover'>
-                  <span v-if='scribble.title' v-text='scribble.title'></span>
-                  <em v-else>No Title</em>
-                </b-tooltip>
-              </b-card-title>
-              <b-card-text>
-                {{ scribble.content }}
-              </b-card-text>
-            </b-card-body>
-          </b-card>
-        </router-link>
+        <scribble-card :scribble='scribble' />
       </b-col>
     </b-row>
   </div>
 </template>
 
 <script>
+import ScribbleCard from './ScribbleCard.vue';
+
 export default {
   name: 'scribble_list',
+  components: {
+    ScribbleCard,
+  },
   data() {
     return {
       error: false,
@@ -59,30 +50,5 @@ export default {
 <style lang='scss'>
 .scribble-card {
   margin-bottom: 30px;
-
-  > a {
-    color: inherit;
-
-    &:hover {
-      text-decoration: none;
-
-      > .card {
-        box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14),
-                    0px 5px 22px 4px rgba(0, 0, 0, 0.12);
-      }
-    }
-  }
-
-  .card-title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .card-text {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
 }
 </style>

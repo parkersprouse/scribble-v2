@@ -21,6 +21,12 @@ const routes = [
     meta: { authorized: true },
   },
   {
+    path: '/scribbles/:id',
+    name: 'show_scribble',
+    component: () => import(/* webpackChunkName: "show_scribble" */ '../views/ShowScribble.vue'),
+    meta: { authorized: true }, // Don't forget to enable viewing scribbles you don't own if allowed
+  },
+  {
     path: '/logout',
     name: 'logout',
     beforeEnter: async (to, from, next) => {
