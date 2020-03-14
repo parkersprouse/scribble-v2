@@ -8,6 +8,7 @@ const attributes = {
   content: { type: Sequelize.TEXT, allowNull: false },
   title: { type: Sequelize.TEXT },
   tags: { type: Sequelize.ARRAY(Sequelize.TEXT) },
+  public: { type: Sequelize.BOOLEAN },
   owner_id: {
     type: Sequelize.INTEGER,
     allowNull: false,

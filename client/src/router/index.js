@@ -62,7 +62,7 @@ router.beforeEach(async (to, from, next) => {
     return next({ path: '/', query: { n: to.fullPath } });
   }
 
-  return next();
+  next();
 });
 
 export default router;

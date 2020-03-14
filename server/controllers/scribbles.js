@@ -1,7 +1,6 @@
 const { Sequelize } = require('../config/db');
 const {
   http_ok,
-  http_no_content,
   http_bad_request,
   http_server_error,
 } = require('../config/constants');
@@ -14,8 +13,9 @@ module.exports = {
 
   async getAll(req, res) {
     const [err, data] = await call(Scribble.findAll());
-    if (err) return respond(res, http_server_error, 'Failed to get all scribbles', err.message);
-    if (!data || data.length === 0) return respond(res, http_no_content, 'No scribbles found');
+    if (err || !data) {
+      return respond(res, http_server_error, 'Failed to get all scribbles', err.message || err);
+    }
 
     const scribbles = data.map((scribble) => scribble.get({ plain: true }));
     respond(res, http_ok, null, scribbles);
@@ -23,8 +23,9 @@ module.exports = {
 
   async getID(req, res) {
     const [err, data] = await call(Scribble.findOne({ where: { id: req.params.id } }));
-    if (err) return respond(res, http_server_error, 'Failed to get scribble');
-    if (!data) return respond(res, http_no_content, 'No scribble found');
+    if (err || !data) {
+      return respond(res, http_server_error, 'Failed to get scribble', err.message || err);
+    }
 
     respond(res, http_ok, null, data);
   },
@@ -34,8 +35,9 @@ module.exports = {
     const [err, data] = await call(Scribble.findAll(
       { where: { owner_id } },
     ));
-    if (err) return respond(res, http_server_error, 'Failed to get scribbles');
-    if (!data || data.length === 0) return respond(res, http_no_content, 'No scribbles found');
+    if (err || !data) {
+      return respond(res, http_server_error, 'Failed to get scribbles', err.message || err);
+    }
 
     const scribbles = data.map((scribble) => scribble.get({ plain: true }));
     respond(res, http_ok, null, scribbles);
@@ -47,7 +49,9 @@ module.exports = {
       where: { owner_id },
       attributes: ['tags'],
     }));
-    if (err) return respond(res, http_server_error, 'Failed to get tags');
+    if (err || !data) {
+      return respond(res, http_server_error, 'Failed to get tags', err.message || err);
+    }
 
     let all_tags = [];
     data.forEach(({ tags }) => {
@@ -59,7 +63,9 @@ module.exports = {
 
   async add(req, res) {
     const [err, data] = await call(Scribble.create({ ...req.body, owner_id: req.current_user.id }));
-    if (err) return respond(res, http_server_error, 'Failed to create scribble', err);
+    if (err || !data) {
+      return respond(res, http_server_error, 'Failed to create scribble', err.message || err);
+    }
 
     respond(res, http_ok, null, data);
   },
@@ -68,7 +74,9 @@ module.exports = {
     const [err, data] = await call(Scribble.update(
       req.body, { where: { id: req.body.id }, returning: true },
     ));
-    if (err) return respond(res, http_server_error, 'Failed to update scribble');
+    if (err) {
+      return respond(res, http_server_error, 'Failed to update scribble', err.message || err);
+    }
     if (!data[0]) return respond(res, http_bad_request, 'No scribble updated, check provided ID');
 
     // data[0] is the number of rows affected
@@ -82,7 +90,9 @@ module.exports = {
     const [err, data] = await call(Scribble.destroy(
       { where: { id: req.params.id } },
     ));
-    if (err) return respond(res, http_server_error, 'Failed to delete scribble');
+    if (err) {
+      return respond(res, http_server_error, 'Failed to delete scribble', err.message || err);
+    }
     if (data < 1) return respond(res, http_bad_request, 'No scribble deleted, check provided ID');
 
     respond(res, http_ok);
@@ -108,11 +118,8 @@ module.exports = {
     const [pagi_err, pagi_data] = await call(Scribble.findAll({
       where: query, limit: per, offset: (page - 1) * per, order: ['created_at'],
     }));
-    if (all_err || pagi_err) {
+    if (all_err || pagi_err || !pagi_data) {
       return respond(res, http_server_error, 'Failed to get scribbles');
-    }
-    if (!pagi_data || pagi_data.length === 0) {
-      return respond(res, http_no_content, 'No scribbles found');
     }
 
     const total = all_data.length;

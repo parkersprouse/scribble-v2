@@ -13,11 +13,14 @@
 
   <div v-else>
     <h1 class='border-bottom font-weight-bold mb-5 pb-2'>Your Scribbles</h1>
-    <b-row>
+    <b-row v-if='scribbles.length > 0'>
       <b-col v-for='scribble in scribbles' class='scribble-card' :key='scribble.id' lg='3' md='4'>
         <scribble-card :scribble='scribble' />
       </b-col>
     </b-row>
+    <h3 v-else class='font-italic text-center'>
+      You currently have no Scribbles
+    </h3>
   </div>
 </template>
 
