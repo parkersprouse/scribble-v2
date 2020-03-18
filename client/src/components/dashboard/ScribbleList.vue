@@ -12,7 +12,15 @@
   </div>
 
   <div v-else>
-    <h1 class='border-bottom font-weight-bold mb-5 pb-2'>Your Scribbles</h1>
+    <h1 class='border-bottom font-weight-bold mb-3 pb-2'>Your Scribbles</h1>
+
+    <div class='text-center'>
+      <router-link class='btn btn-info mb-4 mt-3 px-4 py-2' style='font-size: 1.25rem;'
+      :to='{ name: "create_scribble" }'>
+        <b-icon icon='plus' scale='1.5'></b-icon> Create Scribble
+      </router-link>
+    </div>
+
     <b-row v-if='scribbles.length > 0'>
       <b-col v-for='scribble in scribbles' class='scribble-card' :key='scribble.id' lg='3' md='4'>
         <scribble-card :scribble='scribble' />
