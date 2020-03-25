@@ -9,7 +9,7 @@
     "start": "node server",
     "lint": "eslint --ext .js server/",
     "lint:fix": "eslint --ext .js server/ --fix",
-    "db:create": "node server/bin/setup_db",
+    "db:create": "cd server && node bin/setup_db && npx sequelize db:migrate",
     "dev-build": "cd client && npm run build && cd .. && node server",
     "dev": "concurrently \"npm start\" \"cd client && npm start\" ",
     "heroku-postbuild": "cd client && npm install && npm run build"
@@ -27,7 +27,8 @@
     "morgan": "*",
     "pg": "*",
     "pg-hstore": "*",
-    "sequelize": "*"
+    "sequelize": "*",
+    "sequelize-cli": "*"
   },
   "devDependencies": {
     "concurrently": "*",

@@ -2,10 +2,12 @@ const { Sequelize } = require('../config/db');
 const {
   http_ok,
   http_bad_request,
+  http_not_found,
   http_server_error,
 } = require('../config/constants');
 const { call, respond } = require('../lib');
 const Scribble = require('../models/scribble');
+const User = require('../models/user');
 
 const { Op } = Sequelize;
 
@@ -22,9 +24,13 @@ module.exports = {
   },
 
   async getID(req, res) {
-    const [err, data] = await call(Scribble.findOne({ where: { id: req.params.id } }));
-    if (err || !data) {
-      return respond(res, http_server_error, 'Failed to get scribble', err.message || err);
+    const [err, data] = await call(Scribble.findOne({
+      where: { id: req.params.id },
+      include: [{ model: User, required: true, attributes: ['id', 'email', 'name'] }],
+    }));
+    if (err) return respond(res, http_server_error, 'Failed to get scribble');
+    if (!data || (data.owner_id !== req.current_user.id && !data.public)) {
+      return respond(res, http_not_found, 'Scribble not found');
     }
 
     respond(res, http_ok, null, data);
@@ -32,8 +38,10 @@ module.exports = {
 
   async getOwnerID(req, res) {
     const owner_id = req.params.owner_id || req.current_user.id;
-    const [err, data] = await call(Scribble.findAll(
-      { where: { owner_id } },
+    const [err, data] = await call(Scribble.findAll({
+      where: { owner_id },
+      include: [{ model: User, required: true, attributes: ['id', 'email', 'name'] }],
+    },
     ));
     if (err || !data) {
       return respond(res, http_server_error, 'Failed to get scribbles', err.message || err);
@@ -72,7 +80,7 @@ module.exports = {
 
   async update(req, res) {
     const [err, data] = await call(Scribble.update(
-      req.body, { where: { id: req.body.id }, returning: true },
+      req.body, { where: { id: req.body.id, owner_id: req.current_user.id }, returning: true },
     ));
     if (err) {
       return respond(res, http_server_error, 'Failed to update scribble', err.message || err);
@@ -87,9 +95,9 @@ module.exports = {
   },
 
   async delete(req, res) {
-    const [err, data] = await call(Scribble.destroy(
-      { where: { id: req.params.id } },
-    ));
+    const [err, data] = await call(Scribble.destroy({
+      where: { id: req.params.id, owner_id: req.current_user.id },
+    }));
     if (err) {
       return respond(res, http_server_error, 'Failed to delete scribble', err.message || err);
     }

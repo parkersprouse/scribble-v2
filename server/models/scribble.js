@@ -10,15 +10,6 @@ const attributes = {
   tags: { type: Sequelize.ARRAY(Sequelize.TEXT) },
   public: { type: Sequelize.BOOLEAN },
   rich_editor: { type: Sequelize.BOOLEAN },
-  owner_id: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    references: {
-      model: User,
-      key: 'id',
-      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
-    },
-  },
 };
 
 const table_config = {
@@ -27,6 +18,11 @@ const table_config = {
   underscored: true,
 };
 
-const Scribbles = db.define('scribbles', attributes, table_config);
+const Scribble = db.define('scribbles', attributes, table_config);
+Scribble.belongsTo(User, {
+  foreignKey: { allowNull: false, name: 'owner_id' }, // the user who created the scribble
+  hooks: true,
+  onDelete: 'cascade',
+});
 
-module.exports = Scribbles;
+module.exports = Scribble;

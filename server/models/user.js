@@ -8,6 +8,7 @@ const attributes = {
   name: { type: Sequelize.TEXT },
   pw_hash: { type: Sequelize.TEXT, allowNull: false },
   pw_reset_key: { type: Sequelize.TEXT },
+  settings: { type: Sequelize.JSONB },
 };
 
 // http://docs.sequelizejs.com/manual/tutorial/models-definition.html#configuration
