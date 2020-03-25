@@ -6,11 +6,11 @@
     "npm": "6.13.4"
   },
   "scripts": {
-    "start": "node server",
-    "lint": "eslint --ext .js server/",
-    "lint:fix": "eslint --ext .js server/ --fix",
-    "db:create": "cd server && node bin/setup_db && npx sequelize db:migrate",
-    "dev-build": "cd client && npm run build && cd .. && node server",
+    "start": "node index.js",
+    "lint": "eslint --ext .js .",
+    "lint:fix": "eslint --ext .js . --fix",
+    "db:create": "node ./bin/setup_db && npx sequelize db:migrate",
+    "dev-build": "cd client && npm run build && cd .. && npm start",
     "dev": "concurrently \"npm start\" \"cd client && npm start\" ",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
