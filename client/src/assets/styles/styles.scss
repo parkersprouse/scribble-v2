@@ -2,6 +2,8 @@
 @import 'bootstrap-vue/src/index.scss';
 @import 'nord/src/sass/nord.scss';
 
+@import './quill.scss';
+
 // https://www.nordtheme.com/docs/colors-and-palettes
 
 body {
@@ -16,4 +18,11 @@ body {
   .col-md-6:not(:last-child) {
     margin-bottom: 1rem;
   }
+}
+
+.page-title {
+  border-bottom: 1px solid #dee2e6;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
 }

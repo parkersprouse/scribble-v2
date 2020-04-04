@@ -12,7 +12,7 @@
   </div>
 
   <div v-else>
-    <h1 class='border-bottom font-weight-bold mb-3 pb-2'>Your Scribbles</h1>
+    <h2 class='page-title'>Your Scribbles</h2>
 
     <div class='text-center'>
       <router-link class='btn btn-info mb-4 mt-3 px-4 py-2' style='font-size: 1.25rem;'

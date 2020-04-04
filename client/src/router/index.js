@@ -21,10 +21,16 @@ const routes = [
     meta: { authorized: true },
   },
   {
+    path: '/scribbles/new',
+    name: 'create_scribble',
+    component: () => import(/* webpackChunkName: "create_scribble" */ '../views/CreateScribble.vue'),
+    meta: { authorized: true },
+  },
+  {
     path: '/scribbles/:id',
     name: 'show_scribble',
     component: () => import(/* webpackChunkName: "show_scribble" */ '../views/ShowScribble.vue'),
-    meta: { authorized: true }, // Don't forget to enable viewing scribbles you don't own if allowed
+    meta: { authorized: true },
   },
   {
     path: '/logout',

@@ -43,12 +43,7 @@
 
     <b-button block :disabled='submitting' type='submit' variant='primary'>
       <b-spinner v-if='submitting' label='Loading' small></b-spinner>
-      <span v-else>
-        <b-iconstack style='margin-right: 0.45rem;'>
-          <b-icon icon='plus' scale='1.25' shift-h='8' shift-v='3' stacked></b-icon>
-          <b-icon icon='person-fill' stacked></b-icon>
-        </b-iconstack> Register
-      </span>
+      <span v-else><b-icon icon='person-plus'></b-icon> Register</span>
     </b-button>
   </b-form>
 </template>

@@ -6,10 +6,10 @@ const attributes = {
     type: Sequelize.INTEGER, autoIncrement: true, allowNull: false, unique: true, primaryKey: true,
   },
   content: { type: Sequelize.TEXT, allowNull: false },
-  title: { type: Sequelize.TEXT },
-  tags: { type: Sequelize.ARRAY(Sequelize.TEXT) },
   public: { type: Sequelize.BOOLEAN },
   rich_editor: { type: Sequelize.BOOLEAN },
+  tags: { type: Sequelize.ARRAY(Sequelize.TEXT) },
+  title: { type: Sequelize.TEXT },
 };
 
 const table_config = {

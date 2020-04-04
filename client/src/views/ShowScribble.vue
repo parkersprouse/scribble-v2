@@ -14,8 +14,7 @@
       </div>
 
       <div v-else class='scribble'>
-        <h2 v-html='scribble.title || "<em>No Title</em>"'
-            class='border-bottom font-weight-bold mb-4 pb-2'></h2>
+        <h2 v-html='scribble.title || "<em>No Title</em>"' class='page-title'></h2>
         <b-card class='scribble__content'>
           <b-card-text v-html='content'></b-card-text>
         </b-card>
