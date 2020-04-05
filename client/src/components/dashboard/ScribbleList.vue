@@ -47,9 +47,12 @@ export default {
     };
   },
   mounted() {
-    this.$http.get('/api/scribbles/owner')
+    const { search } = this.$route.query;
+    const query = [];
+    if (search) query.push(`term=${search}`);
+    this.$http.get(`/api/scribbles/filter?${query.join('&')}`)
       .then((res) => {
-        this.scribbles = res.data.content;
+        this.scribbles = res.data.content.scribbles;
       })
       .catch(() => {
         this.error = true;
