@@ -10,9 +10,6 @@
           </b-tooltip>
         </b-card-title>
         <b-card-sub-title class='mb-2'>{{ created_at }}</b-card-sub-title>
-        <b-card-text>
-          {{ scribble.content }}
-        </b-card-text>
       </b-card-body>
     </b-card>
   </router-link>

@@ -16,7 +16,7 @@
         <b-nav-item-dropdown menu-class='w-100' right>
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>
-            <b-icon icon='person-fill'></b-icon> {{ $store.state.current_user.email }}
+            <b-icon icon='people-circle'></b-icon> {{ $store.state.current_user.email }}
           </template>
           <b-dropdown-item :to='{ name: "profile" }'>
             <b-icon icon='gear'></b-icon> Profile

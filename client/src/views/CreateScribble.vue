@@ -18,7 +18,14 @@
                 </b-form-checkbox>
               </div>
 
-              <b-form-input v-model='title' class='mb-2' placeholder='Title'></b-form-input>
+              <b-input-group class='mb-3'>
+                <template v-slot:prepend>
+                  <b-input-group-text>
+                    <b-icon icon='chat' />
+                  </b-input-group-text>
+                </template>
+                <b-form-input v-model='title' placeholder='Title'></b-form-input>
+              </b-input-group>
 
               <quill-editor v-if='rich_editor' v-model='html_content' :options='editor_options'>
               </quill-editor>
@@ -40,7 +47,7 @@
               <p class='mb-0 mt-4 text-center'>
                 <b-button block @click='submit' :disabled='submitting' variant='primary'>
                   <b-spinner v-if='submitting' label='Creating' small></b-spinner>
-                  <span v-else><b-icon icon='box-arrow-right'></b-icon> Create</span>
+                  <span v-else><b-icon icon='plus-circle'></b-icon> Create</span>
                 </b-button>
               </p>
             </b-card-text>
@@ -113,7 +120,7 @@ export default {
         title: this.title,
       })
         .then((res) => {
-          console.log(res.data.id);
+          this.$router.push({ name: 'show_scribble', params: { id: res.data.content.id } });
         })
         .catch((err) => {
           this.error = err?.response?.data?.message || 'Failed to create scribble';
