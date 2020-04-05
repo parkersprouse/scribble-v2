@@ -21,7 +21,7 @@
               <b-input-group class='mb-3'>
                 <template v-slot:prepend>
                   <b-input-group-text>
-                    <b-icon icon='chat' />
+                    <b-icon icon='pencil' />
                   </b-input-group-text>
                 </template>
                 <b-form-input v-model='title' placeholder='Title'></b-form-input>
@@ -42,7 +42,14 @@
                 </span>
               </p>
 
-              <b-form-tags v-model='tags' placeholder='Tags'></b-form-tags>
+              <b-input-group class='mb-3'>
+                <template v-slot:prepend>
+                  <b-input-group-text>
+                    <b-icon icon='tag' />
+                  </b-input-group-text>
+                </template>
+                <b-form-tags v-model='tags' placeholder='Tags'></b-form-tags>
+              </b-input-group>
 
               <p class='mb-0 mt-4 text-center'>
                 <b-button block @click='submit' :disabled='submitting' variant='primary'>
