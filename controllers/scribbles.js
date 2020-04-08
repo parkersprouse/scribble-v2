@@ -112,7 +112,7 @@ module.exports = {
     if (!page) page = 1;
     if (!per) per = 10;
 
-    const body_search = { body: { [Op.iLike]: `%${term}%` } };
+    const body_search = { content: { [Op.iLike]: `%${term}%` } };
     const title_search = { title: { [Op.iLike]: `%${term}%` } };
     const search = { [Op.or]: [body_search, title_search] };
 
@@ -124,7 +124,11 @@ module.exports = {
 
     const [all_err, all_data] = await call(Scribble.findAll({ where: query }));
     const [pagi_err, pagi_data] = await call(Scribble.findAll({
-      where: query, limit: per, offset: (page - 1) * per, order: ['created_at'],
+      where: query,
+      limit: per,
+      offset: (page - 1) * per,
+      order: ['created_at'],
+      include: [{ model: User, required: true, attributes: ['id', 'email', 'name'] }],
     }));
     if (all_err || pagi_err || !pagi_data) {
       return respond(res, http_server_error, 'Failed to get scribbles');

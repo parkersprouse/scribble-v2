@@ -12,7 +12,19 @@
   </div>
 
   <div v-else>
-    <h2 class='page-title'>Your Scribbles</h2>
+    <form @submit.prevent='search'>
+      <b-input-group class='mb-3'>
+        <template v-slot:prepend>
+          <b-input-group-text>
+            <b-icon icon='search' />
+          </b-input-group-text>
+        </template>
+        <b-form-input v-model='search_query' placeholder='Search'></b-form-input>
+        <template v-slot:append>
+          <b-button type='submit'>Search</b-button>
+        </template>
+      </b-input-group>
+    </form>
 
     <div class='text-center'>
       <router-link class='btn btn-info mb-4 mt-3 px-4 py-2' style='font-size: 1.25rem;'
@@ -27,7 +39,7 @@
       </b-col>
     </b-row>
     <h3 v-else class='font-italic text-center'>
-      You currently have no Scribbles
+      {{ search_performed ? 'No Scribbles found' : 'You currently have no Scribbles' }}
     </h3>
   </div>
 </template>
@@ -44,6 +56,7 @@ export default {
     return {
       error: false,
       scribbles: null,
+      search_query: this.$route.query.search || '',
     };
   },
   mounted() {
@@ -57,6 +70,20 @@ export default {
       .catch(() => {
         this.error = true;
       });
+  },
+  methods: {
+    search() {
+      if (this.search_query === this.$route.query.search) return;
+      this.$router.push({
+        name: this.$route.name,
+        query: { ...this.$route.query, search: this.search_query || undefined },
+      });
+    },
+  },
+  computed: {
+    search_performed() {
+      return !!this.$route.query.search;
+    },
   },
 };
 </script>
