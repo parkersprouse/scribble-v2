@@ -28,6 +28,65 @@
               </b-input-group>
 
               <quill-editor v-if='rich_editor' v-model='html_content' :options='editor_options'>
+                <div id='editor_toolbar' slot='toolbar'>
+                  <span class='ql-formats'>
+                    <button v-b-tooltip.hover title='Bold' class='ql-bold' type='button'></button>
+                    <button v-b-tooltip.hover title='Italics' class='ql-italic' type='button'>
+                    </button>
+                    <button v-b-tooltip.hover title='Underline' class='ql-underline' type='button'>
+                    </button>
+                    <button v-b-tooltip.hover title='Strike-through' class='ql-strike'
+                            type='button'></button>
+                  </span>
+                  <span class='ql-formats'>
+                    <button v-b-tooltip.hover title='Numbered List' class='ql-list' type='button'
+                            value='ordered'></button>
+                    <button v-b-tooltip.hover title='Bulleted List' class='ql-list' type='button'
+                            value='bullet'></button>
+                  </span>
+                  <span class='ql-formats'>
+                    <select class='ql-header' id='ql-header'>
+                      <option value='1'></option>
+                      <option value='2'></option>
+                      <option value='3'></option>
+                      <option value='4'></option>
+                      <option value='5'></option>
+                      <option value='6'></option>
+                      <option selected='selected'></option>
+                    </select>
+                    <b-tooltip target='ql-header' triggers='hover'>
+                      Header
+                    </b-tooltip>
+                  </span>
+                  <span class='ql-formats'>
+                    <select class='ql-color' id='ql-color'></select>
+                    <b-tooltip target='ql-color' triggers='hover'>
+                      Text Color
+                    </b-tooltip>
+                    <select class='ql-background' id='ql-background'></select>
+                    <b-tooltip target='ql-background' triggers='hover'>
+                      Background Color
+                    </b-tooltip>
+                  </span>
+                  <span class='ql-formats'>
+                    <select class='ql-align' id='qa-align'></select>
+                    <b-tooltip target='qa-align' triggers='hover'>
+                      Align
+                    </b-tooltip>
+                  </span>
+                  <span class='ql-formats'>
+                    <button v-b-tooltip.hover title='Insert Link' class='ql-link' type='button'>
+                    </button>
+                    <button v-b-tooltip.hover title='Insert Image' class='ql-image' type='button'>
+                    </button>
+                    <button v-b-tooltip.hover title='Insert Video' class='ql-video' type='button'>
+                    </button>
+                  </span>
+                  <span class='ql-formats'>
+                    <button v-b-tooltip.hover title='Clear Formatting' class='ql-clean'
+                            type='button'></button>
+                  </span>
+                </div>
               </quill-editor>
               <b-form-textarea v-else v-model='text_content' max-rows='20'
                                placeholder='Scribble Content' rows='6' style='overflow-y: auto;'>
@@ -91,15 +150,7 @@ export default {
     return {
       editor_options: {
         modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'align': [] }],
-            ['clean'],
-            ['link', 'image', 'video'],
-          ],
+          toolbar: '#editor_toolbar',
         },
         placeholder: 'Scribble Content',
         theme: 'snow',
