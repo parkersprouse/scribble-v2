@@ -60,20 +60,27 @@ export default {
     };
   },
   mounted() {
-    const { search } = this.$route.query;
-    const query = [];
-    if (search) query.push(`term=${search}`);
-    this.$http.get(`/api/scribbles/filter?${query.join('&')}`)
-      .then((res) => {
-        this.scribbles = res.data.content.scribbles;
-      })
-      .catch(() => {
-        this.error = true;
-      });
+    this.filter();
   },
   methods: {
+    filter() {
+      this.scribbles = null;
+      const { search } = this.$route.query;
+      const query = [];
+      if (search) query.push(`term=${search}`);
+      this.$http.get(`/api/scribbles/filter?${query.join('&')}`)
+        .then((res) => {
+          this.scribbles = res.data.content.scribbles;
+        })
+        .catch(() => {
+          this.error = true;
+        });
+    },
     search() {
-      if (this.search_query === this.$route.query.search) return;
+      const terms_match = this.search_query === this.$route.query.search;
+      const terms_empty = !this.search_query && !this.$route.query.search;
+      if (terms_match || terms_empty) return;
+
       this.$router.push({
         name: this.$route.name,
         query: { ...this.$route.query, search: this.search_query || undefined },
@@ -83,6 +90,11 @@ export default {
   computed: {
     search_performed() {
       return !!this.$route.query.search;
+    },
+  },
+  watch: {
+    '$route.query.search': function () {
+      this.filter();
     },
   },
 };
