@@ -1,0 +1,9 @@
+.custom-control.custom-switch {
+  .custom-control-label {
+    cursor: pointer;
+
+    &:before {
+      cursor: pointer;
+    }
+  }
+}
