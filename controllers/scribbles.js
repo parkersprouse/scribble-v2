@@ -135,8 +135,9 @@ module.exports = {
     }
 
     const total = all_data.length;
+    const pages = Math.ceil(total / per);
     const scribbles = pagi_data.map((scribble) => scribble.get({ plain: true }));
-    respond(res, http_ok, null, { scribbles, total });
+    respond(res, http_ok, null, { scribbles, meta: { pages, total } });
   },
 
 };

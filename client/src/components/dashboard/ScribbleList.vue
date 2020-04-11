@@ -12,7 +12,7 @@
   </div>
 
   <div v-else>
-    <form @submit.prevent='search'>
+    <form @submit.prevent='submitSearch'>
       <b-input-group class='mb-3'>
         <template v-slot:prepend>
           <b-input-group-text>
@@ -33,6 +33,12 @@
       </router-link>
     </div>
 
+    <div class='mt-3 mb-3'>
+      <b-pagination-nav align='center' :link-gen='pagiLink' :number-of-pages='meta.pages'
+                        use-router>
+      </b-pagination-nav>
+    </div>
+
     <b-row v-if='scribbles.length > 0'>
       <b-col v-for='scribble in scribbles' class='scribble-card' :key='scribble.id' lg='3' md='4'>
         <scribble-card :scribble='scribble' />
@@ -41,6 +47,12 @@
     <h3 v-else class='font-italic text-center'>
       {{ search_performed ? 'No Scribbles found' : 'You currently have no Scribbles' }}
     </h3>
+
+    <div class='mt-3'>
+      <b-pagination-nav align='center' :link-gen='pagiLink' :number-of-pages='meta.pages'
+                        use-router>
+      </b-pagination-nav>
+    </div>
   </div>
 </template>
 
@@ -55,28 +67,33 @@ export default {
   data() {
     return {
       error: false,
+      meta: null,
       scribbles: null,
       search_query: this.$route.query.search || '',
     };
   },
   mounted() {
-    this.filter();
+    this.getScribbles();
   },
   methods: {
-    filter() {
+    getScribbles() {
       this.scribbles = null;
       const { search } = this.$route.query;
       const query = [];
       if (search) query.push(`term=${search}`);
       this.$http.get(`/api/scribbles/filter?${query.join('&')}`)
         .then((res) => {
+          this.meta = res.data.content.meta;
           this.scribbles = res.data.content.scribbles;
         })
         .catch(() => {
           this.error = true;
         });
     },
-    search() {
+    pagiLink(page) {
+      return page === 1 ? '?' : `?page=${page}`;
+    },
+    submitSearch() {
       const terms_match = this.search_query === this.$route.query.search;
       const terms_empty = !this.search_query && !this.$route.query.search;
       if (terms_match || terms_empty) return;
@@ -94,7 +111,7 @@ export default {
   },
   watch: {
     '$route.query.search': function () {
-      this.filter();
+      this.getScribbles();
     },
   },
 };
