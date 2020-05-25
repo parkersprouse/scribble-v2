@@ -15,8 +15,9 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'camelcase': 'off',
     'quote-props': 'off',
-    'prefer-destructuring': 'off',
     'consistent-return': 'off',
-    'no-param-reassign': 'off',
+    'function-paren-newline': [2, 'consistent'],
+    'max-len': [2, { code: 100 }],
+    'func-names': [2, 'as-needed'],
   },
 };

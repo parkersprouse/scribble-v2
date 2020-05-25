@@ -16,9 +16,10 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'camelcase': 'off',
     'quote-props': 'off',
-    'max-len': [2, { code: 100 }],
-    'function-paren-newline': 'off',
     'consistent-return': 'off',
+    'function-paren-newline': [2, 'consistent'],
+    'max-len': [2, { code: 100 }],
+    'func-names': [2, 'as-needed'],
   },
   parserOptions: {
     ecmaVersion: 2018,
