@@ -30,11 +30,11 @@ app.use(cookie_parser(config.cookie_secret));
 app.use('/api', controllers);
 
 // Serve static assets
-app.use(express.static(path.resolve(__dirname, '..', 'client', 'dist')));
+app.use(express.static(path.resolve(__dirname, 'client', 'dist')));
 
 // Always return the main index.html, so vue-router renders the active route in the client
 app.get('*', (_req, res) => {
-  res.sendFile(path.resolve(__dirname, '..', 'client', 'dist', 'index.html'));
+  res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
 });
 
 module.exports = app;
