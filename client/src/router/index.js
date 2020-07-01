@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import axios from 'axios';
 import Vue from 'vue';
 import VueRouter from 'vue-router';

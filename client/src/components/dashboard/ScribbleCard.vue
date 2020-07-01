@@ -4,9 +4,8 @@
       <b-card-body>
         <b-card-title :id='`title${scribble.id}`'>
           <span v-html='scribble.title || "<em>No Title</em>"'></span>
-          <b-tooltip :target='`title${scribble.id}`' triggers='hover'>
-            <span v-if='scribble.title' v-text='scribble.title'></span>
-            <em v-else>No Title</em>
+          <b-tooltip v-if='scribble.title' :target='`title${scribble.id}`' triggers='hover'>
+            {{ scribble.title }}
           </b-tooltip>
         </b-card-title>
         <b-card-sub-title class='mb-2'>{{ created_at }}</b-card-sub-title>
