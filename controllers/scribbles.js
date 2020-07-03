@@ -79,7 +79,7 @@ module.exports = {
 
   async update(req, res) {
     const [err, data] = await call(Scribble.update(
-      req.body, { where: { id: req.body.id, owner_id: req.current_user.id }, returning: true },
+      req.body, { where: { id: req.params.id, owner_id: req.current_user.id }, returning: true },
     ));
     if (err) {
       return respond(res, http_server_error, 'Failed to update scribble', err.message || err);

@@ -64,8 +64,7 @@ router.get('/scribbles/owner', verifyToken, scribbles.getOwnerID);
 router.get('/scribbles/tags/:owner_id', verifyToken, scribbles.getOwnerTags);
 router.get('/scribbles/tags', verifyToken, scribbles.getOwnerTags);
 
-router.patch('/scribbles', [
-  check('id').not().isEmpty().withMessage('Please provide an ID'),
+router.patch('/scribbles/:id', [
   check('content').not().isEmpty().withMessage('Your scribble cannot be empty'),
 ], verifyToken, validateParams, scribbles.update);
 

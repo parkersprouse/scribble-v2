@@ -74,7 +74,8 @@ export default {
         })
         .catch((err) => {
           this.submitting = false;
-          this.error = err.response.data.message;
+          this.error = err?.response?.data?.message
+            || 'There was an unknown issue when attempting to register your account';
         });
     },
   },

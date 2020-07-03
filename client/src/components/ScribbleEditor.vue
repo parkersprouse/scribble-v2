@@ -180,7 +180,7 @@ export default {
       this.error = null;
       this.submitting = true;
 
-      this.$http.post('/api/scribbles', {
+      this.submission_payload.method(this.submission_payload.endpoint, {
         content: this.rich_editor ? this.html_content : this.text_content,
         public: this.is_public,
         rich_editor: this.rich_editor,
@@ -191,8 +191,8 @@ export default {
           this.$router.push({ name: 'show_scribble', params: { id: res.data.content.id } });
         })
         .catch((err) => {
-          const action = this.existing_scribble ? 'update' : 'create';
-          this.error = err?.response?.data?.message || `Failed to ${action} Scribble`;
+          this.error = err?.response?.data?.message
+            || `Failed to ${this.submission_payload.action} Scribble`;
           this.submitting = false;
         });
     },
@@ -205,6 +205,14 @@ export default {
       if (!this.html_content && !this.text_content) return '';
       if (this.rich_editor) return this.html_content;
       return markdown.render(this.text_content);
+    },
+    submission_payload() {
+      return {
+        action: this.existing_scribble ? 'update' : 'create',
+        endpoint: this.existing_scribble ? `/api/scribbles/${this.existing_scribble.id}`
+          : '/api/scribbles',
+        method: this.existing_scribble ? this.$http.patch : this.$http.post,
+      };
     },
   },
 };
