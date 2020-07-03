@@ -3,6 +3,11 @@
     <navbar />
     <b-container>
       <h2 class='page-title'>Edit Scribble</h2>
+      <div style='margin-bottom: 1rem; margin-top: -0.5rem;'>
+        <router-link :to='{ name: "show_scribble", params: { id: this.$route.params.id } }'>
+          <b-icon icon='chevron-double-left' scale='0.75'></b-icon> Back to Scribble
+        </router-link>
+      </div>
 
       <scribble-editor v-if='$store.state.selected_scribble' />
 

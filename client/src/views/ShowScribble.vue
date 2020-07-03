@@ -31,7 +31,7 @@
       </div>
     </b-container>
 
-    <b-modal v-model='show_delete' centered id='delete-scribble' title='Delete Scribble?'>
+    <b-modal v-model='show_delete' centered id='delete-scribble' title='Confirm Delete Scribble'>
       <alert v-if='error_deleting_scribble' variant='danger'>
         {{ error_deleting_scribble }}
       </alert>
@@ -65,7 +65,7 @@ export default {
     return {
       deleting: false,
       error_loading_scribble: null,
-      error_deleting_scribble: 'There was a problem deleting the Scribble',
+      error_deleting_scribble: null,
       scribble: null,
       show_delete: false,
     };

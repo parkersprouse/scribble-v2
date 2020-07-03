@@ -110,8 +110,8 @@
                       variant='primary'>
               <b-spinner v-if='submitting' label='Creating' small></b-spinner>
               <span v-else>
-                <b-icon :icon='this.existing_scribble ? "check2-circle" : "plus-circle"'></b-icon>
-                {{ this.existing_scribble ? 'Update' : 'Create' }}
+                <b-icon :icon='editor_config.submit_icon'></b-icon>
+                {{ editor_config.submit_action }}
               </span>
             </b-button>
           </p>
@@ -180,7 +180,7 @@ export default {
       this.error = null;
       this.submitting = true;
 
-      this.submission_payload.method(this.submission_payload.endpoint, {
+      this.editor_config.method(this.editor_config.endpoint, {
         content: this.rich_editor ? this.html_content : this.text_content,
         public: this.is_public,
         rich_editor: this.rich_editor,
@@ -192,12 +192,21 @@ export default {
         })
         .catch((err) => {
           this.error = err?.response?.data?.message
-            || `Failed to ${this.submission_payload.action} Scribble`;
+            || `Failed to ${this.editor_config.submit_action.toLowerCase()} Scribble`;
           this.submitting = false;
         });
     },
   },
   computed: {
+    editor_config() {
+      return {
+        endpoint: this.existing_scribble ? `/api/scribbles/${this.existing_scribble.id}`
+          : '/api/scribbles',
+        method: this.existing_scribble ? this.$http.patch : this.$http.post,
+        submit_icon: this.existing_scribble ? 'check2-circle' : 'plus-circle',
+        submit_action: this.existing_scribble ? 'Update' : 'Create',
+      };
+    },
     existing_scribble() {
       return this.$store.state.selected_scribble || null;
     },
@@ -205,14 +214,6 @@ export default {
       if (!this.html_content && !this.text_content) return '';
       if (this.rich_editor) return this.html_content;
       return markdown.render(this.text_content);
-    },
-    submission_payload() {
-      return {
-        action: this.existing_scribble ? 'update' : 'create',
-        endpoint: this.existing_scribble ? `/api/scribbles/${this.existing_scribble.id}`
-          : '/api/scribbles',
-        method: this.existing_scribble ? this.$http.patch : this.$http.post,
-      };
     },
   },
 };
