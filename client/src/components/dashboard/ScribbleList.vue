@@ -1,8 +1,7 @@
 <template>
-  <b-alert v-if='error' show variant='danger'>
-    <b-icon icon='x-circle-fill'></b-icon>
+  <alert v-if='error' variant='danger'>
     There was a problem loading your Scribbles
-  </b-alert>
+  </alert>
 
   <div v-else-if='!scribbles' class='d-flex flex-wrap justify-content-center mb-3'>
     <b-spinner label="Loading..."></b-spinner>

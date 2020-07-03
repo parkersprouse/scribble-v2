@@ -7,10 +7,11 @@ export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   state: {
     current_user: null,
+    selected_scribble: null,
   },
   mutations: {
-    setCurrentUser(state, user) {
-      state.current_user = user;
+    setState(state, { name, value }) {
+      state[name] = value;
     },
   },
 });

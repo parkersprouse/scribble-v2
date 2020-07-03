@@ -1,7 +1,8 @@
 <template>
   <b-form @submit.prevent='register'>
-
-    <b-alert v-if='error' show variant='danger'>{{ error }}</b-alert>
+    <alert v-if='error' variant='danger'>
+      {{ error }}
+    </alert>
 
     <b-form-group label='Email' label-for='email'>
       <b-input-group>

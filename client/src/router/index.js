@@ -34,6 +34,12 @@ const routes = [
     meta: { authorized: true },
   },
   {
+    path: '/scribbles/:id/edit',
+    name: 'edit_scribble',
+    component: () => import(/* webpackChunkName: "edit_scribble" */ '../views/EditScribble.vue'),
+    meta: { authorized: true },
+  },
+  {
     path: '/logout',
     name: 'logout',
     beforeEnter: async (to, from, next) => {
@@ -54,9 +60,9 @@ router.beforeEach(async (to, from, next) => {
   // If the user isn't logged in, a 401 Unauthorized error will be returned.
   const [err, data] = await call(axios.get('/api/users/me'));
   if (data) {
-    store.commit('setCurrentUser', data.data.content);
+    store.commit('setState', { name: 'current_user', value: data.data.content });
   } else {
-    store.commit('setCurrentUser', {});
+    store.commit('setState', { name: 'current_user', value: {} });
   }
 
   // If the requested route is guest-only and the user is logged in

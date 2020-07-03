@@ -41,8 +41,7 @@ module.exports = {
     const [err, data] = await call(Scribble.findAll({
       where: { owner_id },
       include: [{ model: User, required: true, attributes: ['id', 'email', 'name'] }],
-    },
-    ));
+    }));
     if (err || !data) {
       return respond(res, http_server_error, 'Failed to get scribbles', err.message || err);
     }

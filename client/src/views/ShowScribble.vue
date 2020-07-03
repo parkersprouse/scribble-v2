@@ -2,9 +2,9 @@
   <div>
     <navbar />
     <b-container>
-      <b-alert v-if='error' show variant='danger'>
-        {{ error }}
-      </b-alert>
+      <alert v-if='error_loading_scribble' variant='danger'>
+        {{ error_loading_scribble }}
+      </alert>
 
       <div v-else-if='!scribble' class='d-flex flex-wrap justify-content-center mb-3'>
         <b-spinner label='Loading...'></b-spinner>
@@ -19,25 +19,33 @@
           <b-card-text v-html='content'></b-card-text>
         </b-card>
         <div class='scribble__actions'>
-          <b-button v-b-tooltip.hover size='sm' title='Edit' variant='outline-primary'>
-            <svg class='bi b-icon bi-pencil-square' width='1em' height='1em' viewBox='0 0 16 16'
-                 fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
-              <path d='M15.502 1.94a.5.5 0 010 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 01.707
-                       0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 00-.121.196l-.805
-                       2.414a.25.25 0 00.316.316l2.414-.805a.5.5 0 00.196-.12l6.813-6.814z' />
-              <path clip-rule='evenodd' fill-rule='evenodd' d='M1 13.5A1.5 1.5 0 002.5 15h11a1.5 1.5
-                                                               0 001.5-1.5v-6a.5.5 0 00-1 0v6a.5.5 0
-                                                               01-.5.5h-11a.5.5 0 01-.5-.5v-11a.5.5
-                                                               0 01.5-.5H9a.5.5 0 000-1H2.5A1.5 1.5
-                                                               0 001 2.5v11z' />
-            </svg>
-          </b-button>
-          <b-button v-b-tooltip.hover size='sm' title='Delete' variant='outline-danger'>
+          <router-link v-b-tooltip.hover class='btn btn-outline-primary btn-sm' title='Edit'
+                      :to='{ name: "edit_scribble", params: { id: $route.params.id } }'>
+            <b-icon icon='pencil-square' scale='1.25'></b-icon>
+          </router-link>
+          <b-button @click='show_delete = true' v-b-tooltip.hover size='sm' title='Delete'
+                     variant='outline-danger'>
             <b-icon icon='trash' scale='1.25'></b-icon>
           </b-button>
         </div>
       </div>
     </b-container>
+
+    <b-modal v-model='show_delete' centered id='delete-scribble' title='Delete Scribble?'>
+      <alert v-if='error_deleting_scribble' variant='danger'>
+        {{ error_deleting_scribble }}
+      </alert>
+      <p class='my-2'>Are you sure you want to delete this Scribble?</p>
+      <template v-slot:modal-footer>
+        <b-button @click='show_delete = false' :disabled='deleting' variant='outline-secondary'>
+          <b-icon icon='x-circle'></b-icon> Cancel
+        </b-button>
+        <b-button @click='deleteScribble' :disabled='deleting' variant='danger'>
+          <b-spinner v-if='deleting' label='Deleting' small></b-spinner>
+          <span v-else><b-icon icon='trash'></b-icon> Delete</span>
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -55,18 +63,37 @@ export default {
   name: 'show_scribble',
   data() {
     return {
-      error: null,
+      deleting: false,
+      error_loading_scribble: null,
+      error_deleting_scribble: 'There was a problem deleting the Scribble',
       scribble: null,
+      show_delete: false,
     };
   },
   mounted() {
     this.$http.get(`/api/scribbles/id/${this.$route.params.id}`)
       .then((res) => {
         this.scribble = res.data.content;
+        this.$store.commit('setState', { name: 'selected_scribble', value: res.data.content });
       })
       .catch((err) => {
-        this.error = err.response.data.message;
+        this.error_loading_scribble = err?.response?.data?.message
+          || 'There was a problem loading the Scribble';
       });
+  },
+  methods: {
+    deleteScribble() {
+      this.deleting = true;
+      this.$http.delete(`/api/scribbles/${this.$route.params.id}`)
+        .then(() => {
+          this.$router.push({ name: 'dashboard' });
+        })
+        .catch((err) => {
+          this.deleting = false;
+          this.error_deleting_scribble = err?.response?.data?.message
+            || 'There was a problem deleting the Scribble';
+        });
+    },
   },
   computed: {
     content() {

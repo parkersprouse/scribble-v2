@@ -1,10 +1,8 @@
 <template>
   <b-form @submit.prevent='login'>
-
-    <b-alert v-if='error' show variant='danger'>
-      <b-icon icon='x-circle-fill'></b-icon>
+    <alert v-if='error' variant='danger'>
       {{ error }}
-    </b-alert>
+    </alert>
 
     <b-form-group label='Email' label-for='email'>
       <b-input-group>

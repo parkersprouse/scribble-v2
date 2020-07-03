@@ -7,6 +7,7 @@ import './registerServiceWorker';
 import router from './router';
 import store from './store';
 import App from './App.vue';
+import Alert from './components/Alert.vue';
 import Navbar from './components/Navbar.vue';
 
 Vue.config.productionTip = false;
@@ -15,6 +16,7 @@ Vue.prototype.$http = axios;
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
+Vue.component('alert', Alert);
 Vue.component('navbar', Navbar);
 
 new Vue({
