@@ -20,20 +20,23 @@
         </template>
         <b-form-input v-model='search_query' placeholder='Search'></b-form-input>
         <template v-slot:append>
-          <b-button type='submit'>Search</b-button>
+          <b-button type='submit' variant='primary'>Search</b-button>
         </template>
       </b-input-group>
     </form>
 
     <div class='text-center'>
       <router-link class='btn btn-info mb-4 mt-3 px-4 py-2' style='font-size: 1.25rem;'
-      :to='{ name: "create_scribble" }'>
-        <b-icon icon='plus' scale='1.5'></b-icon> Create Scribble
+                  :to='{ name: "create_scribble" }'>
+        <b-icon icon='plus' scale='1.25'></b-icon> Create Scribble
       </router-link>
     </div>
 
     <div class='mt-3 mb-3'>
-      <b-pagination-nav align='center' :link-gen='pagiLink' :number-of-pages='meta.pages'
+      <h6 v-if='!search_performed' class='text-center mb-1 mt-0'>
+        Total Scribbles: <span class='font-weight-bold'>{{ meta.total }}</span>
+      </h6>
+      <b-pagination-nav align='center' :link-gen='pagiLink' :number-of-pages='meta.pages || 1'
                         use-router>
       </b-pagination-nav>
     </div>
@@ -48,8 +51,8 @@
     </h3>
 
     <div class='mt-3'>
-      <b-pagination-nav align='center' :link-gen='pagiLink' :number-of-pages='meta.pages'
-                        use-router>
+      <b-pagination-nav align='center' class='bottom-pagi' :link-gen='pagiLink'
+                       :number-of-pages='meta.pages || 1' use-router>
       </b-pagination-nav>
     </div>
   </div>
@@ -117,7 +120,13 @@ export default {
 </script>
 
 <style lang='scss'>
+$card_v_spacing: 30px;
+
+.bottom-pagi {
+  margin-top: -$card_v_spacing;
+}
+
 .scribble-card {
-  margin-bottom: 30px;
+  margin-bottom: $card_v_spacing;
 }
 </style>
