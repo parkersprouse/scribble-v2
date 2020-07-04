@@ -9,6 +9,16 @@
           </b-tooltip>
         </b-card-title>
         <b-card-sub-title class='mb-2'>{{ created_at }}</b-card-sub-title>
+        <ul v-if='scribble.tags.length > 0'
+            class='list-unstyled d-flex flex-wrap align-items-center mb-0'>
+          <li v-for='tag in scribble.tags' :key='tag'
+              class='badge b-form-tag d-inline-flex align-items-baseline mw-100
+                     mr-1 badge-secondary'>
+            <span class='b-form-tag-content flex-grow-1 text-truncate'>
+              {{ tag }}
+            </span>
+          </li>
+        </ul>
       </b-card-body>
     </b-card>
   </router-link>
