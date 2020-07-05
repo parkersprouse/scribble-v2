@@ -18,14 +18,25 @@
         <b-card class='scribble__content'>
           <b-card-text v-html='content'></b-card-text>
         </b-card>
+
+        <ul v-if='scribble.tags.length > 0'
+            class='list-unstyled d-flex flex-wrap align-items-center mb-0 mt-2 ml-1'>
+          <li v-for='tag in scribble.tags' :key='tag'
+              class='badge b-form-tag d-inline-flex align-items-baseline mw-100
+                     mr-1 badge-secondary'>
+            <span class='b-form-tag-content flex-grow-1 text-truncate'>
+              {{ tag }}
+            </span>
+          </li>
+        </ul>
+
         <div class='scribble__actions'>
-          <router-link v-b-tooltip.hover class='btn btn-outline-primary btn-sm' title='Edit'
+          <router-link class='btn btn-outline-primary btn-sm'
                       :to='{ name: "edit_scribble", params: { id: $route.params.id } }'>
-            <b-icon icon='pencil-square' scale='1.25'></b-icon>
+            <b-icon icon='pencil-square'></b-icon> Edit
           </router-link>
-          <b-button @click='show_delete = true' v-b-tooltip.hover size='sm' title='Delete'
-                     variant='outline-danger'>
-            <b-icon icon='trash' scale='1.25'></b-icon>
+          <b-button @click='show_delete = true' size='sm' variant='outline-danger'>
+            <b-icon icon='trash'></b-icon> Delete
           </b-button>
         </div>
       </div>

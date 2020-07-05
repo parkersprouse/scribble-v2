@@ -9,8 +9,9 @@
           <b-card no-body>
             <b-card-body>
               <b-card-title>What is Scribble?</b-card-title>
-              Scribble is an online notepad and to-do list. Take quick notes to remember for later,
-              whip up a quick to-do list to check later - whatever you may need.
+              Scribble is an online notepad. Take quick notes to remember for later,
+              whip up a quick to-do list to check later, or just use as a general scratchpad -
+              whatever you may need.
             </b-card-body>
           </b-card>
         </b-col>

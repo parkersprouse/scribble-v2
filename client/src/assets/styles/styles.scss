@@ -27,3 +27,11 @@ body {
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
 }
+
+.scribble__content {
+  .card-text {
+    p {
+      margin-bottom: 0;
+    }
+  }
+}
