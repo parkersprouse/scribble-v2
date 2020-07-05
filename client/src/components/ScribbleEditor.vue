@@ -117,7 +117,7 @@
           </p>
         </b-card-text>
       </b-tab>
-      <b-tab title='Preview'>
+      <b-tab title='Preview' class='scribble__content'>
         <b-card-text v-html='preview_content'></b-card-text>
       </b-tab>
     </b-tabs>
