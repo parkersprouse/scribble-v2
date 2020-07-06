@@ -97,7 +97,8 @@
           </p>
 
           <b-form-tags v-model='tags' no-outer-focus class='mb-3'>
-            <template v-slot='{ tags, inputAttrs, inputHandlers, tagVariant, addTag, removeTag }'>
+            <template v-slot='{ duplicateTags, tags, inputAttrs, inputHandlers, tagVariant, addTag,
+                                removeTag }'>
               <b-input-group class='mb-2'>
                 <v-typeahead v-model='new_tag' class='w-100' :data='tag_options'
                             :minMatchingChars='1' placeholder='Enter Tag' :showOnFocus='true'>
@@ -114,6 +115,9 @@
                   </template>
                 </v-typeahead>
               </b-input-group>
+              <div v-if='duplicateTags.length > 0' class='mb-2 mt-n2 text-muted small'>
+                Duplicate tag: {{ duplicateTags.join(',') }}
+              </div>
               <div class='d-inline-block'>
                 <b-form-tag v-for='tag in tags' class='mr-1' :key='tag' @remove='removeTag(tag)'>
                   {{ tag }}
@@ -206,7 +210,7 @@ export default {
     // after a new tag has been added.
     addNewTag(callback, tag) {
       callback(tag);
-      this.new_tag = '';
+      if (!this.tags.includes(tag)) this.new_tag = '';
     },
     submit() {
       this.error = null;
