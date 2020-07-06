@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import Vue from 'vue';
+import VueTypeaheadBootstrap from 'vue-typeahead-bootstrap';
 
 import './assets/styles/styles.scss';
 import './registerServiceWorker';
@@ -18,6 +19,7 @@ Vue.use(IconsPlugin);
 
 Vue.component('alert', Alert);
 Vue.component('navbar', Navbar);
+Vue.component('v-typeahead', VueTypeaheadBootstrap);
 
 new Vue({
   router,

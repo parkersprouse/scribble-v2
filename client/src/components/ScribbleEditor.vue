@@ -96,14 +96,31 @@
             </span>
           </p>
 
-          <b-input-group class='mb-3'>
-            <template v-slot:prepend>
-              <b-input-group-text>
-                <b-icon icon='tag' />
-              </b-input-group-text>
+          <b-form-tags v-model='tags' no-outer-focus class='mb-3'>
+            <template v-slot='{ tags, inputAttrs, inputHandlers, tagVariant, addTag, removeTag }'>
+              <b-input-group class='mb-2'>
+                <v-typeahead v-model='new_tag' class='w-100' :data='tag_options'
+                            :minMatchingChars='1' placeholder='Enter Tag' :showOnFocus='true'>
+                  <template slot='prepend'>
+                    <b-input-group-text>
+                      <b-icon icon='tag' />
+                    </b-input-group-text>
+                  </template>
+                  <template slot='append'>
+                    <b-button @click='addNewTag(addTag, new_tag)' :disabled='!new_tag'
+                               variant='outline-secondary'>
+                      Add
+                    </b-button>
+                  </template>
+                </v-typeahead>
+              </b-input-group>
+              <div class='d-inline-block'>
+                <b-form-tag v-for='tag in tags' class='mr-1' :key='tag' @remove='removeTag(tag)'>
+                  {{ tag }}
+                </b-form-tag>
+              </div>
             </template>
-            <b-form-tags v-model='tags' placeholder='Tags'></b-form-tags>
-          </b-input-group>
+          </b-form-tags>
 
           <p class='mb-0 mt-4 text-center'>
             <b-button block @click='submit' :disabled='submitting || !preview_content'
@@ -155,8 +172,10 @@ export default {
       error: null,
       html_content: '',
       is_public: false,
+      new_tag: '',
       rich_editor: true,
       submitting: false,
+      tag_options: [],
       tags: [],
       text_content: '',
       title: '',
@@ -174,8 +193,21 @@ export default {
         this.text_content = this.existing_scribble.content;
       }
     }
+
+    this.$http.get('/api/scribbles/tags')
+      .then((res) => {
+        this.tag_options = res.data.content;
+      })
+      .catch(() => {});
   },
   methods: {
+    // We use a wrapper so that we can let the Bootstrap-Vue tag form use its own `addTag` logic
+    // while adding our own logic on top of it, specifically to clear the autocomplete field
+    // after a new tag has been added.
+    addNewTag(callback, tag) {
+      callback(tag);
+      this.new_tag = '';
+    },
     submit() {
       this.error = null;
       this.submitting = true;
