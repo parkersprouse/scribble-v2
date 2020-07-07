@@ -99,22 +99,23 @@
           <b-form-tags v-model='tags' no-outer-focus class='mb-3'>
             <template v-slot='{ duplicateTags, tags, inputAttrs, inputHandlers, tagVariant, addTag,
                                 removeTag }'>
-              <b-input-group class='mb-2'>
-                <v-typeahead v-model='new_tag' class='w-100' :data='tag_options'
-                            :minMatchingChars='1' placeholder='Enter Tag' :showOnFocus='true'>
-                  <template slot='prepend'>
-                    <b-input-group-text>
-                      <b-icon icon='tag' />
-                    </b-input-group-text>
-                  </template>
-                  <template slot='append'>
-                    <b-button @click='addNewTag(addTag, new_tag)' :disabled='!new_tag'
-                               variant='outline-secondary'>
-                      Add
-                    </b-button>
-                  </template>
-                </v-typeahead>
-              </b-input-group>
+              <form class='mb-2' @submit.prevent='addNewTag(addTag, new_tag)'>
+                <b-input-group>
+                  <v-typeahead v-model='new_tag' class='w-100' :data='tag_options'
+                              :minMatchingChars='1' placeholder='Enter Tag' :showOnFocus='true'>
+                    <template slot='prepend'>
+                      <b-input-group-text>
+                        <b-icon icon='tag' />
+                      </b-input-group-text>
+                    </template>
+                    <template slot='append'>
+                      <b-button :disabled='!new_tag' variant='outline-secondary' type='submit'>
+                        Add
+                      </b-button>
+                    </template>
+                  </v-typeahead>
+                </b-input-group>
+              </form>
               <div v-if='duplicateTags.length > 0' class='mb-2 mt-n2 text-muted small'>
                 Duplicate tag: {{ duplicateTags.join(',') }}
               </div>
