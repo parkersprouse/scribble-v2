@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@sentry/node": "*",
-    "bcrypt": "4.0.0",
+    "bcrypt": "5.0.0",
     "cookie-parser": "*",
     "dotenv": "*",
     "express": "*",
