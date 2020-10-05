@@ -15,19 +15,19 @@
     "dev": "cd .. && npm run dev"
   },
   "dependencies": {
-    "axios": "*",
-    "bootstrap": "^4.5.0",
-    "bootstrap-vue": "^2.15.0",
+    "axios": "^0.20.0",
+    "bootstrap": "^4.5.2",
+    "bootstrap-vue": "^2.17.3",
     "core-js": "^3.6.5",
-    "luxon": "^1.24.1",
-    "markdown-it": "^11.0.0",
+    "luxon": "^1.25.0",
+    "markdown-it": "^11.0.1",
     "nord": "*",
     "quill": "*",
     "register-service-worker": "^1.7.1",
-    "vue": "^2.6.11",
+    "vue": "^2.6.12",
     "vue-quill-editor": "*",
-    "vue-router": "^3.3.4",
-    "vue-typeahead-bootstrap": "^2.4.0",
+    "vue-router": "^3.4.5",
+    "vue-typeahead-bootstrap": "^2.6.0",
     "vuex": "^3.5.1"
   },
   "devDependencies": {
@@ -40,10 +40,10 @@
     "@vue/eslint-config-airbnb": "^5.1.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.7.2",
-    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-vue": "^6.1.2",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.12"
   }
 }
