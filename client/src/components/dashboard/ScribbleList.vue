@@ -41,18 +41,19 @@
       </b-pagination-nav>
     </div>
 
-    <b-row v-if='scribbles.length > 0'>
+    <b-row v-if='scribbles.length > 0' style='margin-bottom: -30px;'>
       <b-col v-for='scribble in scribbles' class='scribble-card' :key='scribble.id' lg='3' md='4'>
         <scribble-card :scribble='scribble' />
       </b-col>
     </b-row>
+
     <h3 v-else class='font-italic text-center'>
       {{ search_performed ? 'No Scribbles found' : 'You currently have no Scribbles' }}
     </h3>
 
     <div class='mt-3'>
-      <b-pagination-nav align='center' class='bottom-pagi' :link-gen='pagiLink'
-                       :number-of-pages='meta.pages || 1' use-router>
+      <b-pagination-nav align='center' :link-gen='pagiLink' :number-of-pages='meta.pages || 1'
+                        use-router>
       </b-pagination-nav>
     </div>
   </div>
@@ -80,9 +81,12 @@ export default {
   methods: {
     getScribbles() {
       this.scribbles = null;
-      const { search } = this.$route.query;
       const query = [];
-      if (search) query.push(`term=${search}`);
+      Object.keys(this.$route.query).forEach((key) => {
+        if (this.$route.query[key]) {
+          query.push(`${key}=${this.$route.query[key]}`);
+        }
+      });
       this.$http.get(`/api/scribbles/filter?${query.join('&')}`)
         .then((res) => {
           this.meta = res.data.content.meta;
@@ -93,7 +97,7 @@ export default {
         });
     },
     pagiLink(page) {
-      return page === 1 ? '?' : `?page=${page}`;
+      return !page || page === 1 ? '?' : `?page=${page}`;
     },
     submitSearch() {
       const terms_match = this.search_query === this.$route.query.search;
@@ -115,16 +119,15 @@ export default {
     '$route.query.search': function () {
       this.getScribbles();
     },
+    '$route.query.page': function () {
+      this.getScribbles();
+    },
   },
 };
 </script>
 
 <style lang='scss'>
 $card_v_spacing: 30px;
-
-.bottom-pagi {
-  margin-top: -$card_v_spacing;
-}
 
 .scribble-card {
   margin-bottom: $card_v_spacing;
