@@ -115,7 +115,7 @@ module.exports = {
     const title_search = { title: { [Op.iLike]: `%${search}%` } };
     const merged_search = { [Op.or]: [body_search, title_search] };
 
-    const tag_filter = { tags: { $contains: [tag] } };
+    const tag_filter = { tags: { [Op.contains]: [tag] } };
 
     let query = { owner_id: req.current_user.id };
     if (search) query = { ...query, ...merged_search };

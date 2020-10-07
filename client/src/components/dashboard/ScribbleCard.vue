@@ -12,7 +12,9 @@
               class='badge b-form-tag d-inline-flex align-items-baseline mw-100 mr-1
                      badge-secondary'>
             <span class='b-form-tag-content flex-grow-1 text-truncate'>
-              {{ tag }}
+              <router-link :to='{ name: "dashboard", query: { ...$route.query, tag: tag } }'>
+                {{ tag }}
+              </router-link>
             </span>
           </li>
         </ul>
@@ -39,6 +41,11 @@ export default {
     created_at() {
       const date = DateTime.fromISO(this.scribble.createdAt);
       return date.toLocaleString(DateTime.DATETIME_MED);
+    },
+  },
+  watch: {
+    '$route.query.tag': function () {
+      this.$emit('getScribbles');
     },
   },
 };

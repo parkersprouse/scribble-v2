@@ -2,7 +2,7 @@
   <div>
     <navbar />
     <b-container>
-      <h2 class='page-title'>Your Scribbles</h2>
+      <h2 class='page-title'>Scribbles</h2>
       <scribble-list />
     </b-container>
   </div>

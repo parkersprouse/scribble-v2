@@ -12,7 +12,8 @@
     "db:create": "node ./bin/setup_db && npx sequelize db:migrate",
     "dev-build": "cd client && npm run build && cd .. && npm start",
     "dev": "concurrently \"npm start\" \"cd client && npm start\" ",
-    "heroku-postbuild": "cd client && npm install && npm install --only=dev && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev && npm run build",
+    "freshinstall": "rm -rf node_modules && npm install && cd client && rm -rf node_modules && npm install"
   },
   "dependencies": {
     "@sentry/node": "*",

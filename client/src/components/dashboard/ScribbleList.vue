@@ -43,7 +43,7 @@
 
     <b-row v-if='scribbles.length > 0' style='margin-bottom: -30px;'>
       <b-col v-for='scribble in scribbles' class='scribble-card' :key='scribble.id' lg='3' md='4'>
-        <scribble-card :scribble='scribble' />
+        <scribble-card @getScribbles='getScribbles' :scribble='scribble' />
       </b-col>
     </b-row>
 

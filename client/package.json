@@ -12,7 +12,8 @@
     "lint": "vue-cli-service lint",
     "lint:fix": "vue-cli-service lint --fix",
     "start": "npm run serve",
-    "dev": "cd .. && npm run dev"
+    "dev": "cd .. && npm run dev",
+    "freshinstall": "rm -rf node_modules && npm install && cd .. && rm -rf node_modules && npm install"
   },
   "dependencies": {
     "axios": "^0.20.0",
