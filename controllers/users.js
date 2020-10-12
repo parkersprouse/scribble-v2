@@ -19,7 +19,9 @@ module.exports = {
   },
 
   async getAll(req, res) {
-    const [err, data] = await call(Users.findAll());
+    const [err, data] = await call(Users.findAll({
+      attributes: ['createdAt', 'email', 'id', 'name', 'settings', 'updatedAt'],
+    }));
     if (err) return respond(res, http_server_error, 'Failed to get all users');
 
     const users = data.map((user) => user.get({ plain: true }));
@@ -27,7 +29,10 @@ module.exports = {
   },
 
   async getID(req, res) {
-    const [err, data] = await call(Users.findOne({ where: { id: req.params.id } }));
+    const [err, data] = await call(Users.findOne({
+      attributes: ['createdAt', 'email', 'id', 'name', 'settings', 'updatedAt'],
+      where: { id: req.params.id },
+    }));
     if (err) return respond(res, http_server_error, 'Failed to get user');
     if (!data) return respond(res, http_no_content, 'No user found');
 

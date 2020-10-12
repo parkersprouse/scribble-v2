@@ -22,6 +22,12 @@ const routes = [
     meta: { authorized: true },
   },
   {
+    path: '/profile',
+    name: 'profile',
+    component: () => import(/* webpackChunkName: "profile" */ '../views/Profile.vue'),
+    meta: { authorized: true },
+  },
+  {
     path: '/scribbles/new',
     name: 'create_scribble',
     component: () => import(/* webpackChunkName: "create_scribble" */ '../views/CreateScribble.vue'),
