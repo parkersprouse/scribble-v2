@@ -22,10 +22,23 @@
           <b-input-group>
             <template v-slot:prepend>
               <b-input-group-text>
-                <b-icon icon='envelope' />
+                <b-icon icon='tag' />
               </b-input-group-text>
             </template>
             <b-form-input v-model='form.name' id='name' placeholder='Name' type='text'>
+            </b-form-input>
+          </b-input-group>
+        </b-form-group>
+
+        <b-form-group label='Current Password' label-for='password_current'>
+          <b-input-group>
+            <template v-slot:prepend>
+              <b-input-group-text>
+                <b-icon icon='lock' />
+              </b-input-group-text>
+            </template>
+            <b-form-input v-model='form.password_current' id='password_current'
+                          placeholder='Current Password' type='password' required>
             </b-form-input>
           </b-input-group>
         </b-form-group>
@@ -48,6 +61,7 @@ export default {
       form: {
         email: this.$store.state.current_user.email || '',
         name: this.$store.state.current_user.name || '',
+        password_current: '',
       },
       submitting: false,
     };
@@ -55,7 +69,23 @@ export default {
   methods: {
     submit() {
       this.submitting = true;
-      this.error = 'Broked';
+      this.error = null;
+
+      this.$http.patch('/api/users', this.form)
+        .then(() => {
+          this.$bvToast.toast('Info successfully updated', {
+            autoHideDelay: 3000,
+            solid: true,
+            title: 'Success',
+            variant: 'success',
+          });
+          this.submitting = false;
+        })
+        .catch((err) => {
+          this.submitting = false;
+          this.error = err?.response?.data?.message
+            || 'There was an unknown issue when updating your info';
+        });
     },
   },
 };
