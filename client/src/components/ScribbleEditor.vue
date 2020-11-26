@@ -83,8 +83,8 @@
               </span>
             </div>
           </quill-editor>
-          <b-form-textarea v-else v-model='text_content' max-rows='20'
-                           placeholder='Scribble Content' rows='6' style='overflow-y: auto;'>
+          <b-form-textarea v-else v-model='text_content' class='markdown-text-editor' max-rows='20'
+                           placeholder='Scribble Content' rows='6'>
           </b-form-textarea>
 
           <p class='mb-4 mt-0 text-right switch-editor-type'>
@@ -266,5 +266,9 @@ export default {
       text-decoration: underline;
     }
   }
+}
+
+.markdown-text-editor {
+  overflow-y: auto !important;
 }
 </style>
