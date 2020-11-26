@@ -16,20 +16,20 @@
     "freshinstall": "rm -rf node_modules && npm install && cd .. && rm -rf node_modules && npm install"
   },
   "dependencies": {
-    "axios": "^0.20.0",
-    "bootstrap": "^4.5.2",
-    "bootstrap-vue": "^2.17.3",
-    "core-js": "^3.6.5",
+    "axios": "^0.21.0",
+    "bootstrap": "^4.5.3",
+    "bootstrap-vue": "^2.19.0",
+    "core-js": "^3.8.0",
     "luxon": "^1.25.0",
-    "markdown-it": "^11.0.1",
+    "markdown-it": "^12.0.2",
     "nord": "^0.2.1",
     "quill": "^1.3.7",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-quill-editor": "^3.0.6",
-    "vue-router": "^3.2.0",
-    "vue-typeahead-bootstrap": "^2.5.3-beta",
-    "vuex": "^3.4.0"
+    "vue-router": "^3.4.9",
+    "vue-typeahead-bootstrap": "^2.6.0",
+    "vuex": "^3.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -43,7 +43,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
-    "sass": "^1.26.5",
+    "sass": "^1.29.0",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   }

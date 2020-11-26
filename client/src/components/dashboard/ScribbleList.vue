@@ -21,6 +21,10 @@
         <b-form-input v-model='search_query' placeholder='Search'></b-form-input>
         <template v-slot:append>
           <b-button type='submit' variant='primary'>Search</b-button>
+          <b-button v-if='$route.query.search' @click='clearSearch' type='button'
+                    variant='outline-secondary'>
+            Clear
+          </b-button>
         </template>
       </b-input-group>
     </form>
@@ -79,6 +83,13 @@ export default {
     this.getScribbles();
   },
   methods: {
+    clearSearch() {
+      this.$router.push({
+        name: this.$route.name,
+        query: { ...this.$route.query, search: undefined },
+      });
+    },
+
     getScribbles() {
       this.scribbles = null;
       const query = [];
@@ -91,14 +102,17 @@ export default {
         .then((res) => {
           this.meta = res.data.content.meta;
           this.scribbles = res.data.content.scribbles;
+          this.search_query = this.$route.query.search || '';
         })
         .catch(() => {
           this.error = true;
         });
     },
+
     pagiLink(page) {
       return !page || page === 1 ? '?' : `?page=${page}`;
     },
+
     submitSearch() {
       const terms_match = this.search_query === this.$route.query.search;
       const terms_empty = !this.search_query && !this.$route.query.search;
@@ -119,6 +133,7 @@ export default {
     '$route.query.search': function () {
       this.getScribbles();
     },
+
     '$route.query.page': function () {
       this.getScribbles();
     },
