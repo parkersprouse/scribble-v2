@@ -16,7 +16,7 @@
     "freshinstall": "rm -rf node_modules && npm install && cd .. && rm -rf node_modules && npm install"
   },
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.19.0",
     "core-js": "^3.8.0",
